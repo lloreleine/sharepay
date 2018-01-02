@@ -1,0 +1,29 @@
+{
+  "name": "sharepay",
+  "version": "0.0.1",
+  "description": "our sharepay project",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lloreleine/sharepay.git"
+  },
+  "author": "ltm2",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lloreleine/sharepay/issues"
+  },
+  "homepage": "https://github.com/lloreleine/sharepay#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "jest": "^22.0.4",
+    "node-fetch": "^1.7.3",
+    "nunjucks": "^3.0.1",
+    "pg": "^7.4.0",
+    "request": "^2.83.0",
+    "start": "^5.1.0"
+  }
+}
