@@ -1,9 +1,8 @@
-const PG = require("pg");
 const fetch = require("node-fetch");
-
 const express = require("express");
 const nunjucks = require("nunjucks");
 const app = express();
+const database = require("./database.js");
 
 const port = process.env.PORT || 3000;
 
@@ -27,5 +26,12 @@ app.listen(port, function () {
 });
 
 app.get("/", function(request, result) {
-  result.render("dashboard")
-});
+  database.getCurrentActivities()
+  .then((activities) => activities.rows)
+  // .then((activities) => console.log(activities))
+  .then(function(activities) {
+    return result.render("dashboard", {
+     activities : activities
+    })
+  })
+})
