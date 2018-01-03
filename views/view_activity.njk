@@ -1,60 +1,22 @@
-{# {% extends "layout.njk" %}
-{% block content %} #}
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+{% extends "layout.njk" %}
 
-    <style>
-      #header{
-        background-color: grey;
-      }
-      #navbar{
-        background-color: black;
-        color: white;
-      }
-      #navbar, #header{
-        padding:5px;
-        padding-left: 20px;
-      }
-      h3{
-        margin: 40px;
-      }
-      #graph{
-        width:300px;
-        height:300px;
-      }
-      .button{
-        float: right;
-      }
-      .list-group-item{
-        margin-left:30px;
-        margin-bottom:10px;
-        max-width: 1300px;
-      }
-    </style>
+{% block title %}
+  <title>View Activity</title>
+{% endblock %}
 
-  </head>
-  <body>
+{% block content %}
 
-    <h2 id="header">Header from layout</h2>
-    <h2 id="navbar">Navbar</h2>
-    <h3>${Title of the activity} - ${Sum of the expense}</h3>
+  <h3>${Title of the activity} - ${Sum of the expense}</h3>
 
-    <div class="d-flex justify-content-center">
-      <div id="graph">
-        <canvas id="myChart"></canvas>
-      </div>
+  <div class="d-flex justify-content-center">
+    <div id="graph">
+      <canvas id="myChart"></canvas>
     </div>
+  </div>
 
-    <script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+  <script>
     var ctx = document.getElementById("myChart").getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'pie',
@@ -90,35 +52,32 @@
         }
     });
 
-    </script>
+  </script>
 
-    <h3>Expenses</h3>
+  <h3>Expenses</h3>
 
-    <div class="list-group">
-    <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
-      <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">Buy some stuff 1</h5>
-        <a href="/"><button class="button"><i class="fas fa-search-plus"></i>&nbsp;View Expense</button></a>
-      </div>
-      <p class="mb-1">for: ${nb-people}, amount:${amount_value}</p>
+  <div class="list-group">
+  <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">Buy some stuff 1</h5>
+      <a href="/"><button class="button"><i class="fas fa-search-plus"></i>&nbsp;View Expense</button></a>
     </div>
-    <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
-      <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">Buy some stuff 2</h5>
-        <a href="/"><button class="button"><i class="fas fa-search-plus"></i>&nbsp;View Expense</button></a>
-      </div>
-      <p class="mb-1">for: ${nb-people}, amount:${amount_value}</p>
-    </div>
-    <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
-      <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">Buy some stuff 3</h5>
-        <a href="/"><button class="button"><i class="fas fa-search-plus"></i>&nbsp;View Expense</button></a>
-      </div>
-      <p class="mb-1">for: ${nb-people}, amount:${amount_value}</p>
-    </div>
+    <p class="mb-1">for: ${nb-people}, amount:${amount_value}</p>
   </div>
+  <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">Buy some stuff 2</h5>
+      <a href="/"><button class="button"><i class="fas fa-search-plus"></i>&nbsp;View Expense</button></a>
+    </div>
+    <p class="mb-1">for: ${nb-people}, amount:${amount_value}</p>
+  </div>
+  <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">Buy some stuff 3</h5>
+      <a href="/"><button class="button"><i class="fas fa-search-plus"></i>&nbsp;View Expense</button></a>
+    </div>
+    <p class="mb-1">for: ${nb-people}, amount:${amount_value}</p>
+  </div>
+</div>
 
-  </body>
-</html>
-
-{# {% endblock %} #}
+{% endblock %}
