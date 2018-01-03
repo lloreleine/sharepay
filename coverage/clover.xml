@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1514982577803" clover="3.2.0">
+  <project timestamp="1514982577803" name="All files">
+    <metrics statements="19" coveredstatements="18" conditionals="2" coveredconditionals="2" methods="3" coveredmethods="2" elements="24" coveredelements="22" complexity="0" loc="19" ncloc="19" packages="2" files="2" classes="2">
+      <package name="sharepay">
+        <metrics statements="15" coveredstatements="14" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="1"/>
+        <file name="server.js" path="/Users/Martin/Workspace/sharepay/server.js">
+          <metrics statements="15" coveredstatements="14" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="1"/>
+          <line num="1" count="1" type="stmt"/>
+          <line num="2" count="1" type="stmt"/>
+          <line num="4" count="1" type="stmt"/>
+          <line num="5" count="1" type="stmt"/>
+          <line num="6" count="1" type="stmt"/>
+          <line num="8" count="1" type="cond" truecount="2" falsecount="0"/>
+          <line num="10" count="1" type="stmt"/>
+          <line num="15" count="1" type="stmt"/>
+          <line num="16" count="1" type="stmt"/>
+          <line num="18" count="1" type="stmt"/>
+          <line num="19" count="1" type="stmt"/>
+          <line num="21" count="1" type="stmt"/>
+          <line num="22" count="1" type="stmt"/>
+          <line num="25" count="1" type="stmt"/>
+          <line num="26" count="0" type="stmt"/>
+        </file>
+      </package>
+      <package name="sharepay..__tests__">
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <file name="server.test.js" path="/Users/Martin/Workspace/sharepay/.__tests__/server.test.js">
+          <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+          <line num="1" count="1" type="stmt"/>
+          <line num="3" count="1" type="stmt"/>
+          <line num="4" count="1" type="stmt"/>
+          <line num="5" count="1" type="stmt"/>
+        </file>
+      </package>
+    </metrics>
+  </project>
+</coverage>
