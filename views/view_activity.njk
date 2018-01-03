@@ -6,7 +6,7 @@
 
 {% block content %}
 
-  <h3>${Title of the activity} - ${Sum of the expense}</h3>
+  <h3>Title : {{activity.title}} - ${Sum of the expense}</h3>
 
   <div class="d-flex justify-content-center">
     <div id="graph">
@@ -56,28 +56,17 @@
 
   <h3>Expenses</h3>
 
+
   <div class="list-group">
-  <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">Buy some stuff 1</h5>
-      <a href="/"><button class="button"><i class="fas fa-search-plus"></i>&nbsp;View Expense</button></a>
+    {% for element in expenses %}
+    <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">{{element.title}} by <em>{{element.name}}</em></h5>
+        <a href="/"><button class="button"><i class="fas fa-search-plus"></i>&nbsp;View Expense</button></a>
+      </div>
+      <p class="mb-1">for: {{element.count}}, amount: {{element.amount}} €</p>
     </div>
-    <p class="mb-1">for: ${nb-people}, amount:${amount_value}</p>
+    {% endfor %}
   </div>
-  <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">Buy some stuff 2</h5>
-      <a href="/"><button class="button"><i class="fas fa-search-plus"></i>&nbsp;View Expense</button></a>
-    </div>
-    <p class="mb-1">for: ${nb-people}, amount:${amount_value}</p>
-  </div>
-  <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">Buy some stuff 3</h5>
-      <a href="/"><button class="button"><i class="fas fa-search-plus"></i>&nbsp;View Expense</button></a>
-    </div>
-    <p class="mb-1">for: ${nb-people}, amount:${amount_value}</p>
-  </div>
-</div>
 
 {% endblock %}

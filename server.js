@@ -17,12 +17,8 @@ app.use(require("body-parser").urlencoded({ extended: true }));
 app.set("views", __dirname + "/views");
 app.set("view engine", "njk");
 
-app.get("/view_activity", function(request, result) {
-  result.render("view_activity");
-});
-
-app.listen(port, function () {
-  console.log("Server listening on port:" + port);
+app.get("/view_activity/:id", function(request, result) {
+  jsFunctions.viewActivity(request.params.id, result);
 });
 
 app.get("/", function(request, result) {
@@ -34,4 +30,8 @@ app.get("/", function(request, result) {
      activities : activities
     })
   })
-})
+});
+
+app.listen(port, function(){
+  console.log("Server listening on port:"+ port);
+});
