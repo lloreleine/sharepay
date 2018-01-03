@@ -18,7 +18,7 @@ app.set("views", __dirname + "/views");
 app.set("view engine", "njk");
 
 app.get("/view_activity/:id", function(request, result) {
-  jsFunctions.viewActivity(request.params.id, result);
+  database.viewActivity(request.params.id, result)
 });
 
 app.get("/", function(request, result) {
