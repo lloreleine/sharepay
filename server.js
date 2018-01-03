@@ -12,11 +12,15 @@ nunjucks.configure("views", {
   express:app
 });
 
-app.use(express.static('./images/'));
+app.use(express.static('./public/'));
 app.use(require("body-parser").urlencoded({ extended: true }));
 
 app.set("views", __dirname + "/views");
 app.set("view engine", "njk");
+
+app.get("/view_activity", function(request, result) {
+  result.render("view_activity");
+});
 
 app.listen(port, function () {
   console.log("Server listening on port:" + port);

@@ -7,33 +7,30 @@
       integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
       crossorigin="anonymous"
     />
-    <style>
+    <link rel="stylesheet" href="stylesheet.css">
 
-.jumbotron {
-  margin-bottom: 0px;
-  background-image: url(/banner.jpg);
-  background-size: cover;
-  background-repeat: no-repeat;
-  color: white;
-}
+    {% block title %}
+    <title>Home</title>
+    {% endblock %}
 
-</style>
 </head>
 <body>
   <nav class="navbar navbar-toggleable-md navbar-light bg-dark">
     <a class="navbar-brand text-white" href="#">
-      <img src="/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+      <img src="../images/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
       PAY SHARE
     </a>
     <a class="navbar-brand" href="/"><button type="button" class="btn btn btn-default navbar-btn navbar-right ">Logout</button></a>
   </nav>
 
   <p class="jumbotron"></p>
-  {% block headbuttons %}{% endblock %}
+
   {% block content %}{% endblock %}
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
+
 </body>
 </html>

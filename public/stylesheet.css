@@ -1,0 +1,36 @@
+/* layout */
+.jumbotron {
+  margin-bottom: 0px;
+  background-image: url(./images/banner.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: white;
+}
+
+/* View_activity */
+#header{
+  background-color: grey;
+}
+#navbar{
+  background-color: black;
+  color: white;
+}
+#navbar, #header{
+  padding:5px;
+  padding-left: 20px;
+}
+h3{
+  margin: 40px;
+}
+#graph{
+  width:300px;
+  height:300px;
+}
+.button{
+  float: right;
+}
+.list-group-item{
+  margin-left:30px;
+  margin-bottom:10px;
+  max-width: 1300px;
+}
