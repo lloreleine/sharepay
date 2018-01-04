@@ -113,7 +113,7 @@ app.get("/logout", function(request, result) {
 app.get("/finalize_activity/:id", function(request, result) {
   database.finalizeActivity(request.params.id)
   .then(function(activities) {
-    return result.redirect("/")
+    return result.redirect("/dashboard")
   })
 });
 
