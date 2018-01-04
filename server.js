@@ -118,10 +118,10 @@ app.get("/finalize_activity/:id", function(request, result) {
 });
 
 app.get("/addexpense/:id", function(request, result) {
-  console.log(request.params.id);
-  result.render("addexpense", {
-    activityId:request.params.id
-  })
+  database.addExpense(request.params.id, result)
+  // result.render("addexpense", {
+  //   activityId:request.params.id
+  // })
 });
 
 app.listen(port, function(){

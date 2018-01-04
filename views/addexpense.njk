@@ -13,17 +13,30 @@
     <div>
       <label>Describe your expense</label><br/>
       <input type="text" placeholder="Your expense label" name="expense_descr"/>
+      <div class="floatright">
+        <label>Paid by:</label>&nbsp;
+        <select name="expense_buyer">
+          {% for element in expenses %}<option>{{element.name}}</option>{% endfor %}
+        </select>
+      </div>
     </div>
     <div>
       <label>Cost:</label>&nbsp;
-      <input type="integer" name="expense_cost"/>
+      <input type="number" name="expense_cost" style="width: 70px;"/>€
     </div>
-    <div>
-      <label>Paid by:</label>&nbsp;
-      <select name="expense_buyer">
-        <option value="{{volvo}}">{{Volvo}}</option>
-      </select>
-    </div>
+
+    <fieldset>
+      <legend>It benefits to</legend>
+      {% for element in expenses %}
+      <div>
+        <input type="checkbox" name="benefits" value="{{element.name}}">
+        <label for="{{element.name}}">{{element.name}}</label>
+      </div>
+      {% endfor %}
+    </fieldset>
   </form>
+
+  <a href="/"><button type="button" class="btn btn-dark"><i class="far fa-save"></i>&nbsp;&nbsp;Save the expense</button></a>
+</div>
 
 {% endblock %}
