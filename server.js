@@ -101,6 +101,10 @@ app.post(
   }
 );
 
+app.post("/register", function(request, result) {
+  database.register(request.body,request,result);
+});
+
 app.get("/logout", function(request, result) {
   request.logout();
   result.redirect("/login");
