@@ -1,14 +1,14 @@
 {% extends "layout.njk" %}
 
 {% block title %}
-  <title>View Activity</title>
+  <title>Pay Share - View Activity</title>
 {% endblock %}
 
 {% block content %}
 <div class="container">
   <a href="/dashboard/{{userid}}"><button type="button" class="btn btn-dark">Dashboard</button></a>
   <a href="/"><button type="button" class="btn btn-dark">Update activity</button></a>
-  <a href="/"><button type="button" class="btn btn-dark">Add expense</button></a>
+  <a href="/addexpense/{{activityId}}"><button type="button" class="btn btn-dark">Add expense</button></a>
   <a href="/balance/{{activityId}}"><button type="button" class="btn btn-dark">View Balance</button></a>
   <button type="button" class="btn btn btn-dark" data-toggle="modal" data-target="#finalizeActivity">
     Finalize the activity
