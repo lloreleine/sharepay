@@ -64,18 +64,26 @@ app.get("/login", function(request, result) {
 });
 
 app.get("/view_activity/:id", function(request, result) {
-  database.viewActivity(request.params.id, result)
+  database.viewActivity(request.params.id, request,result)
 });
 
 app.get("/history", function(request, result) {
   database.getPastActivities()
+  .then((activities) => activities.rows)
+  .then(function(activities) {
+    return result.render("history", {
+     activities : activities,
+     id :request.user.id
+    })
+  })
+});
 
 app.get("/dashboard/:id", function(request, result) {
   require("connect-ensure-login").ensureLoggedIn("/login"),
   database.getCurrentActivities(request.params.id)
   .then((activities) => activities.rows)
   .then(function(activities) {
-    return result.render("history", {
+    return result.render("dashboard", {
      activities : activities
     })
   })
@@ -83,9 +91,6 @@ app.get("/dashboard/:id", function(request, result) {
 
 app.get("/balance/:id", function(request, result) {
   result.render("balance")
-
-app.post("/register", function(request, result) {
-  database.register(request.body,request,result);
 });
 
 app.post(

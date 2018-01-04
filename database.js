@@ -73,7 +73,7 @@ function getPastActivities() {
   return client.query("SELECT * FROM activities WHERE status = FALSE");
 }
 
-function viewActivity(activityId, result) {
+function viewActivity(activityId, request,result) {
   const client = new PG.Client({
    connectionString: process.env.DATABASE_URL,
    ssl: true,
@@ -104,7 +104,8 @@ function viewActivity(activityId, result) {
                 expenses : result1.rows,
                 amounts_sum : result2.rows,
                 total : result3.rows,
-                activityId : activityId
+                activityId : activityId,
+                userid :request.user.id
               });
               client.end();
             }
