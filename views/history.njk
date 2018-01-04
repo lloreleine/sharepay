@@ -1,14 +1,13 @@
 {% extends "layout.njk" %}
 
 {% block title %}
-  <title>Pay Share - Dashboard</title>
+  <title>Pay Share - History</title>
 {% endblock %}
 
 {% block content %}
 <div class="container">
-  <button type="button" class="btn btn-dark">Add an activity</button>
-  <a href="/history"><button type="button" class="btn btn-dark">History</button></a>
-  <h2>Current Activities</h2>
+  <button type="button" class="btn btn-dark">Dashboard</button>
+  <h2>Past Activities</h2>
 
   <div class="list-group">
     {% for activity in activities %}

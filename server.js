@@ -17,9 +17,7 @@ app.use(require("body-parser").urlencoded({ extended: true }));
 app.set("views", __dirname + "/views");
 app.set("view engine", "njk");
 
-app.get("/view_activity/:id", function(request, result) {
-  database.viewActivity(request.params.id, result)
-});
+
 
 app.get("/", function(request, result) {
   database.getCurrentActivities()
@@ -27,6 +25,20 @@ app.get("/", function(request, result) {
   // .then((activities) => console.log(activities))
   .then(function(activities) {
     return result.render("dashboard", {
+     activities : activities
+    })
+  })
+});
+
+app.get("/view_activity/:id", function(request, result) {
+  database.viewActivity(request.params.id, result)
+});
+
+app.get("/history", function(request, result) {
+  database.getPastActivities()
+  .then((activities) => activities.rows)
+  .then(function(activities) {
+    return result.render("history", {
      activities : activities
     })
   })

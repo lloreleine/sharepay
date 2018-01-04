@@ -14,6 +14,15 @@ function getCurrentActivities() {
   return client.query("SELECT * FROM activities WHERE status = TRUE");
 }
 
+function getPastActivities() {
+  const client = new PG.Client({
+   connectionString: process.env.DATABASE_URL,
+   ssl: true,
+  });
+  client.connect();
+  return client.query("SELECT * FROM activities WHERE status = FALSE");
+}
+
 function viewActivity(activityId, result) {
   const client = new PG.Client({
    connectionString: process.env.DATABASE_URL,
@@ -58,5 +67,6 @@ function viewActivity(activityId, result) {
 module.exports = {
   fakeTest: fakeTest,
   getCurrentActivities: getCurrentActivities,
-  viewActivity:viewActivity
+  viewActivity: viewActivity,
+  getPastActivities: getPastActivities
 }
