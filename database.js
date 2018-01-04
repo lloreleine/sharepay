@@ -67,13 +67,13 @@ function getCurrentActivities(id) {
   return client.query("SELECT * FROM activities inner join users_activities on user_id=$1 and activity_id=id WHERE status = TRUE",[id]);
 }
 
-function getPastActivities() {
+function getPastActivities(id) {
   const client = new PG.Client({
    connectionString: process.env.DATABASE_URL,
    ssl: true,
   });
   client.connect();
-  return client.query("SELECT * FROM activities WHERE status = FALSE");
+  return client.query("SELECT * FROM activities inner join users_activities on user_id=$1 and activity_id=id WHERE status = FALSE",[id]);
 }
 
 function viewActivity(activityId, request,result) {

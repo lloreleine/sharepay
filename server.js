@@ -68,7 +68,7 @@ app.get("/view_activity/:id", function(request, result) {
 });
 
 app.get("/history", function(request, result) {
-  database.getPastActivities()
+  database.getPastActivities(request.user.id)
   .then((activities) => activities.rows)
   .then(function(activities) {
     return result.render("history", {
