@@ -9,7 +9,6 @@
   <button type="button" class="btn btn-dark">Add an activity</button>
   <a href="/history"><button type="button" class="btn btn-dark">History</button></a>
   <h2>Current Activities</h2>
-
   <div class="list-group">
     {% for activity in activities %}
     <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
@@ -19,7 +18,7 @@
       </div>
       <p class="mb-1"> {{activity.date}}, {{activity.location}} </p>
       </div>
-  </div>
     {% endfor %}
+  </div>
 </div>
 {% endblock %}
