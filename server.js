@@ -110,6 +110,13 @@ app.get("/logout", function(request, result) {
   result.redirect("/login");
 });
 
+app.get("/finalize_activity/:id", function(request, result) {
+  database.finalizeActivity(request.params.id)
+  .then(function(activities) {
+    return result.redirect("/")
+  })
+});
+
 app.listen(port, function(){
   console.log("Server listening on port:"+ port);
 });

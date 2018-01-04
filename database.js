@@ -116,6 +116,16 @@ function viewActivity(activityId, request,result) {
   );
 }
 
+function finalizeActivity(activityId) {
+  const client = new PG.Client({
+   connectionString: process.env.DATABASE_URL,
+   ssl: true,
+  });
+  client.connect();
+  return client.query("UPDATE activities SET status=FALSE WHERE id=$1::uuid",[activityId])
+    .then(res => client.end())
+}
+
 module.exports = {
   fakeTest: fakeTest,
   getCurrentActivities: getCurrentActivities,
@@ -123,5 +133,6 @@ module.exports = {
   getPastActivities: getPastActivities,
   register:register,
   findUserById:findUserById,
-  findUser:findUser
+  findUser:findUser,
+  finalizeActivity: finalizeActivity
 }
