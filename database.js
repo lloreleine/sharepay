@@ -5,13 +5,63 @@ function fakeTest(number) {
   return number + 1
 }
 
-function getCurrentActivities() {
+
+function findUser(email, password) {
+  const client = new PG.Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+});
+  client.connect();
+  return client.query(
+    "SELECT * from users WHERE name=$1 and password=$2",
+    [email,password]).then(res => {
+    client.end();
+    return res.rows[0];
+    })
+}
+
+function findUserById(id) {
+  const client = new PG.Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+});
+  client.connect();
+  return client.query(
+    "SELECT * from users WHERE id=$1",
+    [id]).then(res => {
+      client.end();
+      return res.rows[0];
+    })
+}
+
+function register(user,request,result) {
   const client = new PG.Client({
    connectionString: process.env.DATABASE_URL,
    ssl: true,
   });
   client.connect();
-  return client.query("SELECT * FROM activities WHERE status = TRUE");
+  client.query("INSERT INTO users (id,name, password) VALUES (uuid_generate_v4(),$1,$2) RETURNING *", [user.username, user.password])
+    .then(res => {
+      request.logIn(res.rows[0], function(error) {
+        if (error) {
+          return result.redirect("/register");
+        }
+        else {
+        return result.redirect(`/dashboard/${res.rows[0].id}`);}
+      });
+    })
+    .catch(error => {
+      console.warn(error);
+    });
+}
+
+function getCurrentActivities(id) {
+  const client = new PG.Client({
+   connectionString: process.env.DATABASE_URL,
+   ssl: true,
+  });
+  client.connect();
+  return client.query("SELECT * FROM activities inner join users_activities on user_id=$1 and activity_id=id WHERE status = TRUE",[id]);
 }
 
 function getPastActivities() {
@@ -70,4 +120,7 @@ module.exports = {
   getCurrentActivities: getCurrentActivities,
   viewActivity: viewActivity,
   getPastActivities: getPastActivities
+  register:register,
+  findUserById:findUserById,
+  findUser:findUser
 }
