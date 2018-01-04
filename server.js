@@ -17,12 +17,9 @@ app.use(require("body-parser").urlencoded({ extended: true }));
 app.set("views", __dirname + "/views");
 app.set("view engine", "njk");
 
-
-
 app.get("/", function(request, result) {
   database.getCurrentActivities()
   .then((activities) => activities.rows)
-  // .then((activities) => console.log(activities))
   .then(function(activities) {
     return result.render("dashboard", {
      activities : activities
@@ -42,6 +39,10 @@ app.get("/history", function(request, result) {
      activities : activities
     })
   })
+});
+
+app.get("/balance", function(request, result) {
+  result.render("balance")
 });
 
 app.listen(port, function(){
