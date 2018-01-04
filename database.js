@@ -126,6 +126,29 @@ function finalizeActivity(activityId) {
     .then(res => client.end())
 }
 
+function addExpense(activityId, result) {
+  const client = new PG.Client({
+   connectionString: process.env.DATABASE_URL,
+   ssl: true,
+  });
+  console.log("toto");
+  client.connect();
+  client.query(
+    "SELECT name FROM expenses INNER JOIN users ON users.id=expenses.buyer_id WHERE activity_id=$1::uuid GROUP BY name;",
+    [activityId],
+    function(error, result1){
+      if(error){
+        console.warn(error);
+      }
+      console.log(result1.rows);
+      result.render("addexpense", {
+        expenses:result1.rows
+      });
+      client.end();
+    }
+  );
+}
+
 module.exports = {
   fakeTest: fakeTest,
   getCurrentActivities: getCurrentActivities,
@@ -134,5 +157,6 @@ module.exports = {
   register:register,
   findUserById:findUserById,
   findUser:findUser,
-  finalizeActivity: finalizeActivity
+  finalizeActivity: finalizeActivity,
+  addExpense:addExpense
 }

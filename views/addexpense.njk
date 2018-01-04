@@ -1,0 +1,29 @@
+{% extends "layout.njk" %}
+
+{% block title %}
+  <title>Pay Share - Add Expense</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <a href="/"><button type="button" class="btn btn-dark">Dashboard</button></a>
+  <a href="/view_activity/{{activityId}}"><button type="button" class="btn btn-dark">Back to the activity</button></a>
+
+  <form>
+    <div>
+      <label>Describe your expense</label><br/>
+      <input type="text" placeholder="Your expense label" name="expense_descr"/>
+    </div>
+    <div>
+      <label>Cost:</label>&nbsp;
+      <input type="integer" name="expense_cost"/>
+    </div>
+    <div>
+      <label>Paid by:</label>&nbsp;
+      <select name="expense_buyer">
+        <option value="{{volvo}}">{{Volvo}}</option>
+      </select>
+    </div>
+  </form>
+
+{% endblock %}
