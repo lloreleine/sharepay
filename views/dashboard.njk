@@ -9,16 +9,19 @@
   <button type="button" class="btn btn-dark">Add an activity</button>
   <button type="button" class="btn btn-dark">History</button>
   <h2>Current Activities</h2>
+
   <div class="list-group">
     {% for activity in activities %}
-    <a href="/view_activity/{{activity.id}}" class="list-group-item list-group-item-action flex-column">
+    <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
       <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-1">{{activity.title}}</h5>
-        <small>{{activity.date}}</small>
+        <a href="/view_activity/{{activity.id}}"><button class="button"><i class="fas fa-search-plus"></i>&nbsp;View activity</button></a>
       </div>
-      <small>{{activity.location}}</small>
-    </a>
-    {% endfor %}
+      <p class="mb-1"> {{activity.date}}, {{activity.location}} </p>
+      {# <small>{{activity.date}}</small>
+      <small>{{activity.location}}</small> #}
+      </div>
   </div>
+    {% endfor %}
 </div>
 {% endblock %}
