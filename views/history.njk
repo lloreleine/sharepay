@@ -18,8 +18,14 @@
         <h5 class="mb-1">{{activity.title}}</h5>
         <a href="/balance/{{activity.id}}"><button class="button"><i class="fas fa-search-plus"></i>&nbsp;View balance</button></a>
       </div>
+      <div class="d-flex w-100 justify-content-between">
+        <p> members: 1, amount: 1000€</p>
+        {# to complete #}
         <a href="/view_activity/{{activity.id}}"><button class="button"><i class="fas fa-search-plus"></i>&nbsp;Re-open activity</button></a>
+      </div>
+      <div class="d-flex w-100 justify-content-between">
         <p class="mb-1"> {{activity.date}}, {{activity.location}} </p>
+      </div>
     </div>
     {% endfor %}
   </div>
