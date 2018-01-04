@@ -51,9 +51,10 @@ function viewActivity(activityId, result) {
                 console.warn(error);
               }
               result.render("view_activity", {
-                expenses:result1.rows,
-                amounts_sum:result2.rows,
-                total:result3.rows
+                expenses : result1.rows,
+                amounts_sum : result2.rows,
+                total : result3.rows,
+                activityId : activityId
               });
               client.end();
             }
