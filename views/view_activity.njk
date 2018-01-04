@@ -6,7 +6,7 @@
 
 {% block content %}
 
-  <h3>${Title of the activity} - ${Sum of the expense}</h3>
+  <h3>{{amounts_sum[0].title}} - Total des dépenses = {{total[0].sum}}€</h3>
 
   <div class="d-flex justify-content-center">
     <div id="graph">
@@ -17,14 +17,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
   <script>
-    var ctx = document.getElementById("myChart").getContext('2d');
-    var myChart = new Chart(ctx, {
+    const ctx = document.getElementById("myChart").getContext('2d');
+    const myChart = new Chart(ctx, {
         type: 'pie',
         data: {
-            labels: ["Martin", "Thierry", "Maxime", "Loreleine"],
+            labels: [{% for element in amounts_sum %}"{{element.name}}",{% endfor %}],
             datasets: [{
                 label: 'Expenses',
-                data: [120, 500, 70, 160],
+                data: [{% for element in amounts_sum %}"{{element.sum}}",{% endfor %}],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -57,27 +57,15 @@
   <h3>Expenses</h3>
 
   <div class="list-group">
-  <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">Buy some stuff 1</h5>
-      <a href="/"><button class="button"><i class="fas fa-search-plus"></i>&nbsp;View Expense</button></a>
+    {% for element in expenses %}
+    <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">{{element.title}} by <em>{{element.name}}</em></h5>
+        <a href="/"><button class="button"><i class="fas fa-search-plus"></i>&nbsp;View Expense</button></a>
+      </div>
+      <p class="mb-1">for: {{element.count}}, amount: {{element.amount}} €</p>
     </div>
-    <p class="mb-1">for: ${nb-people}, amount:${amount_value}</p>
+    {% endfor %}
   </div>
-  <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">Buy some stuff 2</h5>
-      <a href="/"><button class="button"><i class="fas fa-search-plus"></i>&nbsp;View Expense</button></a>
-    </div>
-    <p class="mb-1">for: ${nb-people}, amount:${amount_value}</p>
-  </div>
-  <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">Buy some stuff 3</h5>
-      <a href="/"><button class="button"><i class="fas fa-search-plus"></i>&nbsp;View Expense</button></a>
-    </div>
-    <p class="mb-1">for: ${nb-people}, amount:${amount_value}</p>
-  </div>
-</div>
 
 {% endblock %}
