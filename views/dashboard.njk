@@ -1,28 +1,22 @@
 {% extends "layout.njk" %}
 
 {% block title %}
-  <title>Current activities</title>
-{% endblock %}
-
-{% block headbuttons %}
-<div class="container">
-  <button type="button" class="btn btn-dark">Add an activity</button>
-  <button type="button" class="btn btn-dark">History</button>
-</div>
+  <title>Pay Share - Dashboard</title>
 {% endblock %}
 
 {% block content %}
 <div class="container">
+  <button type="button" class="btn btn-dark">Add an activity</button>
+  <button type="button" class="btn btn-dark">History</button>
   <h2>Current Activities</h2>
   <div class="list-group">
     {% for activity in activities %}
-    <a href="#" class="list-group-item list-group-item-action flex-column">
+    <a href="/view_activity/{{activity.id}}" class="list-group-item list-group-item-action flex-column">
       <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-1">{{activity.title}}</h5>
         <small>{{activity.date}}</small>
       </div>
-      <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-      <small>Donec id elit non mi porta.</small>
+      <small>{{activity.location}}</small>
     </a>
     {% endfor %}
   </div>
