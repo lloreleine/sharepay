@@ -117,6 +117,13 @@ app.get("/finalize_activity/:id", function(request, result) {
   })
 });
 
+app.get("/addexpense/:id", function(request, result) {
+  database.addExpense(request.params.id, result)
+  // result.render("addexpense", {
+  //   activityId:request.params.id
+  // })
+});
+
 app.listen(port, function(){
   console.log("Server listening on port:"+ port);
 });

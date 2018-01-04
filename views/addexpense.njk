@@ -1,0 +1,42 @@
+{% extends "layout.njk" %}
+
+{% block title %}
+  <title>Pay Share - Add Expense</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <a href="/dashboard/{{userid}}"><button type="button" class="btn btn-dark">Dashboard</button></a>
+  <a href="/view_activity/{{activityId}}"><button type="button" class="btn btn-dark">Back to the activity</button></a>
+
+  <form>
+    <div>
+      <label>Describe your expense</label><br/>
+      <input type="text" placeholder="Your expense label" name="expense_descr"/>
+      <div class="floatright">
+        <label>Paid by:</label>&nbsp;
+        <select name="expense_buyer">
+          {% for element in expenses %}<option>{{element.name}}</option>{% endfor %}
+        </select>
+      </div>
+    </div>
+    <div>
+      <label>Cost:</label>&nbsp;
+      <input type="number" name="expense_cost" style="width: 70px;"/>€
+    </div>
+
+    <fieldset>
+      <legend>It benefits to</legend>
+      {% for element in expenses %}
+      <div>
+        <input type="checkbox" name="benefits" value="{{element.name}}">
+        <label for="{{element.name}}">{{element.name}}</label>
+      </div>
+      {% endfor %}
+    </fieldset>
+  </form>
+
+  <a href="/"><button type="button" class="btn btn-dark"><i class="far fa-save"></i>&nbsp;&nbsp;Save the expense</button></a>
+</div>
+
+{% endblock %}
