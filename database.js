@@ -119,7 +119,7 @@ module.exports = {
   fakeTest: fakeTest,
   getCurrentActivities: getCurrentActivities,
   viewActivity: viewActivity,
-  getPastActivities: getPastActivities
+  getPastActivities: getPastActivities,
   register:register,
   findUserById:findUserById,
   findUser:findUser
