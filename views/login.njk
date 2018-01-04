@@ -1,0 +1,30 @@
+{% extends "layout.njk" %}
+
+{% block title %}
+  <title>Login</title>
+{% endblock %}
+
+{% block content %}
+<form action="/login" method="post">
+  <div>
+    <label>Name:</label>
+    <input type="text" name="username"/><br/>
+  </div>
+  <div>
+    <label>Password:</label>
+    <input type="password" name="password"/>
+  </div>
+  <div>
+    <button type="submit">
+      Connexion
+    </button>
+  </div>
+</form>
+
+<div>
+  <p>You don't have an account?</p>
+  <a href="/register"><button>
+    Subscribe
+  </button></a>
+</div>
+{% endblock %}
