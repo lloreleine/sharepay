@@ -129,12 +129,17 @@ function finalizeActivity(activityId) {
     .then(res => client.end())
 }
 
+function reopenActivity(activityId) {
+  client.connect();
+  return client.query("UPDATE activities SET status=TRUE WHERE id=$1::uuid",[activityId])
+    .then(res => client.end())
+}
+
 function addExpense(activityId, result) {
   const client = new PG.Client({
    connectionString: process.env.DATABASE_URL,
    ssl: true,
   });
-  console.log("toto");
   client.connect();
   client.query(
     "SELECT name FROM expenses INNER JOIN users ON users.id=expenses.buyer_id WHERE activity_id=$1::uuid GROUP BY name;",
@@ -152,6 +157,7 @@ function addExpense(activityId, result) {
   );
 }
 
+
 module.exports = {
   fakeTest: fakeTest,
   getCurrentActivities: getCurrentActivities,
@@ -161,5 +167,6 @@ module.exports = {
   findUserById:findUserById,
   findUser:findUser,
   finalizeActivity: finalizeActivity,
-  addExpense:addExpense
+  addExpense:addExpense,
+  reopenActivity: reopenActivity
 }
