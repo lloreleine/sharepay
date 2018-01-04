@@ -116,6 +116,7 @@ function viewActivity(activityId, request,result) {
   );
 }
 
+<<<<<<< HEAD
 function finalizeActivity(activityId) {
   const client = new PG.Client({
    connectionString: process.env.DATABASE_URL,
@@ -159,4 +160,10 @@ module.exports = {
   findUser:findUser,
   finalizeActivity: finalizeActivity,
   addExpense:addExpense
+=======
+module.exports = {
+  fakeTest: fakeTest,
+  getCurrentActivities: getCurrentActivities,
+  viewActivity:viewActivity
+>>>>>>> fix databse conflict
 }
