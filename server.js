@@ -41,7 +41,7 @@ app.get("/history", function(request, result) {
   })
 });
 
-app.get("/balance", function(request, result) {
+app.get("/balance/:id", function(request, result) {
   result.render("balance")
 });
 
