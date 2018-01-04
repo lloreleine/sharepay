@@ -5,6 +5,12 @@
 {% endblock %}
 
 {% block content %}
+<div class="container">
+  <a href="/"><button type="button" class="btn btn-dark">Dashboard</button></a>
+  <a href="/"><button type="button" class="btn btn-dark">Update activity</button></a>
+  <a href="/"><button type="button" class="btn btn-dark">Add expense</button></a>
+  <a href="/balance/{{activityId}}"><button type="button" class="btn btn-dark">View Balance</button></a>
+  <a href="/"><button type="button" class="btn btn-dark">Finalize the activity</button></a>
 
   <h3>{{amounts_sum[0].title}} - Total des dépenses = {{total[0].sum}}€</h3>
 
