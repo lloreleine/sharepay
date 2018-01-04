@@ -6,7 +6,7 @@
 
 {% block content %}
 
-  <h3>{{amounts_sum[0].title}} - {{total[0].sum}}€</h3>
+  <h3>{{amounts_sum[0].title}} - Total des dépenses = {{total[0].sum}}€</h3>
 
   <div class="d-flex justify-content-center">
     <div id="graph">
@@ -55,7 +55,6 @@
   </script>
 
   <h3>Expenses</h3>
-
 
   <div class="list-group">
     {% for element in expenses %}
