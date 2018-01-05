@@ -193,6 +193,24 @@ app.get("/reopen_activity/:id", function(request, result) {
   })
 });
 
+app.get("/updateactivity/:id", function(request, result) {
+  database.displayActivity(request.params.id, request, result)
+});
+
+app.post("/updatetitle/:id", function(request, result) {
+  database.updateTitle(request.params.id, request.body, request, result)
+  .then(function(update) {
+    return result.redirect(`/updateactivity/${request.params.id}`)
+  })
+});
+
+app.post("/updateparticipants/:id", function(request, result) {
+  database.updateParticipants(request.params.id, request.body, request, result)
+  .then(function(update) {
+    return result.redirect(`/updateactivity/${request.params.id}`)
+  })
+});
+
 app.listen(port, function(){
   console.log("Server listening on port:"+ port);
 });

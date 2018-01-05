@@ -7,14 +7,42 @@
 {% block content %}
 <div class="container">
   <a href="/dashboard/{{userid}}"><button type="button" class="btn btn-dark">Dashboard</button></a>
-  <a href="/updateactivity/{{activityId}}"><button type="button" class="btn btn-dark">Update activity</button></a>
-  <a href="/addexpense/{{activityId}}"><button type="button" class="btn btn-dark">Add expense</button></a>
-  <a href="/balance/{{activityId}}"><button type="button" class="btn btn-dark">View Balance</button></a>
   <button type="button" class="btn btn btn-dark" data-toggle="modal" data-target="#finalizeActivity">
     Finalize the activity
   </button>
 
-  <h3>{{amounts_sum[0].title}} - Total des dépenses = {{total[0].sum}}€</h3>
+  {# <h3>Activity ID: {{activity.id}}</h3> #}
+
+  <h3>Activity: {{activity.title}}</h3>
+  <form action="/updatetitle/{{activity.id}}" method="POST">
+    <input type="text" placeholder="New Title" name="new_title"/> &nbsp;&nbsp;
+    <button type="submit">Update the title</button>
+  </form>
+
+  <h3>Current location: {{activity.location}}</h3>
+  <button type="button">Update the location</button>
+
+  <h3>Current date: {{activity.date}}</h3>
+  <button type="button">Update the date</button>
+
+  <h3>Users involved:</h3>
+  <ul>
+    {%for element in participants %}
+    <li>{{element.name}}</li>
+    {% endfor %}
+  </ul>
+  <form action="/updateparticipants/{{activity.id}}" method="POST">
+    <fieldset>
+      <legend>Who is involved?</legend>
+      {% for element in users %}
+      <div>
+        <input type="checkbox" name="benefits" value="{{element.id}}">
+        <label for="{{element.name}}">{{element.name}}</label>
+      </div>
+      {% endfor %}
+    </fieldset>
+    <button type="submit">Update the users involved</button>
+  </form>
 
   <!-- Pop up finalize activity -->
   <div class="modal fade" id="finalizeActivity" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -40,49 +68,8 @@
   </div>
 
   <div class="d-flex justify-content-center">
-    <div id="graph">
-      <canvas id="myChart"></canvas>
-    </div>
+
   </div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-  <script>
-    const ctx = document.getElementById("myChart").getContext('2d');
-    const myChart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: [{% for element in amounts_sum %}"{{element.name}}",{% endfor %}],
-            datasets: [{
-                label: 'Expenses',
-                data: [{% for element in amounts_sum %}"{{element.sum}}",{% endfor %}],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(153, 102, 255, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255,99,132,1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(153, 102, 255, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero:true
-                    }
-                }]
-            }
-        }
-    });
-
-  </script>
 
   <h3>Expenses</h3>
 

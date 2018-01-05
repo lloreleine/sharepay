@@ -114,7 +114,7 @@ function viewActivity(activityId, request,result) {
               if(error){
                 console.warn(error);
               }
-              console.log(result2.rows);
+              // console.log(result2.rows);
               result.render("view_activity", {
                 expenses : result1.rows,
                 amounts_sum : result2.rows,
@@ -272,6 +272,72 @@ function addActivity(activity,request, result) {
     })
 }
 
+// SELECT user_id, name FROM users_activities INNER JOIN users ON users.id=users_activities.user_id WHERE activity_id=$1::uuid",[activityId],
+
+function displayActivity(activityId, request, result) {
+  const client = new PG.Client({
+   connectionString: process.env.DATABASE_URL,
+   ssl: true,
+  });
+  client.connect();
+  client.query(
+    "SELECT * FROM activities WHERE id=$1::uuid",[activityId],
+    function(error, result1){
+      if(error){
+        console.warn(error);
+      }
+      client.query(
+        "SELECT user_id, name FROM users_activities INNER JOIN users ON users.id=users_activities.user_id WHERE activity_id=$1::uuid",[activityId],
+        function(error, result2){
+          if(error){
+            console.warn(error);
+          }
+          client.query(
+            "SELECT name, id FROM users;",
+            [],
+            function(error, result3){
+              if(error){
+                console.warn(error);
+              }
+              result.render("updateactivity", {
+                activity:result1.rows[0],
+                participants:result2.rows,
+                users:result3.rows
+              });
+              client.end();
+            }
+          );
+        }
+      );
+    }
+  );
+}
+
+function updateTitle(activityId, update, request, result) {
+  const client = new PG.Client({
+   connectionString: process.env.DATABASE_URL,
+   ssl: true,
+  });
+  console.log("update :");
+  console.log(update);
+  client.connect();
+  return client.query("UPDATE activities SET title=$1 WHERE id=$2::uuid",[update.new_title,activityId])
+    .then(res => client.end())
+}
+
+function updateParticipants(activityId, update, request, result) {
+  const client = new PG.Client({
+   connectionString: process.env.DATABASE_URL,
+   ssl: true,
+  });
+  console.log("update :");
+  console.log(update);
+  client.connect();
+  return client.query("UPDATE activities SET title=$1 WHERE id=$2::uuid",[update.new_title,activityId])
+    .then(res => client.end())
+}
+
+
 function getBalance(id,result,request) {
   const transactions=[];
   const userexpense=[];
@@ -339,5 +405,8 @@ module.exports = {
   addActivity:addActivity,
   getActivity:getActivity,
   findOrCreateUser: findOrCreateUser,
-  getBalance:getBalance
+  getBalance:getBalance,
+  displayActivity:displayActivity,
+  updateTitle:updateTitle,
+  updateParticipants:updateParticipants
 }
