@@ -140,10 +140,26 @@ function reopenActivity(activityId) {
     .then(res => client.end())
 }
 
-function findOrCreateUser(user) {
-  // return client.query("INSERT INTO users (id, name, email) VALUES (uuid_generate_v4(),$1,$2)",[user.name], [user.email])
-  return client.query("INSERT INTO users (id, name, email) VALUES (uuid_generate_v4(), 'jeanmich', 'jeanmich@wanadoo.com')")
-    .then(res => client.end())
+function findOrCreateUser(profile, callback) {
+  const client = new PG.Client({
+   connectionString: process.env.DATABASE_URL,
+   ssl: true,
+  });
+  client.connect();
+  return client.query("SELECT * from users WHERE email=$1", [profile._json.email])
+  .then(res => {
+    if (res.rows.length === 0) {
+      return client.query("INSERT INTO users (id, name, email) VALUES (uuid_generate_v4(),$1,$2) RETURNING *",[profile._json.name, profile._json.email])
+      .then(result => {
+        callback(null, result.rows[0]);
+      })
+      .catch(error => {
+        callback(error);
+      })
+    }
+    callback(null, res.rows[0]);
+  })
+  .catch(error => console.warn(error))
 }
 
 function viewExpense(activityId, result) {

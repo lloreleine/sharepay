@@ -44,6 +44,32 @@ app.post("/register", function(request, result) {
   database.register(request.body,request,result);
 });
 
+passport.use(
+  new LocalStrategy(function(email, password, callback) {
+    database.findUser(email, password)
+    .then(user => {
+      callback(null, user);
+    })
+    .catch(error => {
+      callback(error);
+    });
+  })
+);
+
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: process.env.CLIENT_ID,
+      clientSecret: process.env.CLIENT_SECRET,
+      callbackURL: process.env.REDIRECT_URI,
+      profileFields: ['id', 'displayName', 'email']
+    },
+    function(accessToken, refreshToken, profile, callback) {
+      return database.findOrCreateUser(profile, callback)
+    }
+  )
+);
+
 //Login system
 passport.serializeUser(function(user, callback) {
   return callback(null, user.id);
@@ -54,18 +80,6 @@ passport.deserializeUser(function(id, callback) {
     callback(null, user);
   });
 });
-
-passport.use(
-  new LocalStrategy(function(email, password, callback) {
-    database.findUser(email, password)
-      .then(user => {
-        callback(null, user);
-      })
-      .catch(error => {
-        callback(error);
-      });
-  })
-);
 
 app.get("/login", function(request, result) {
   result.render("login");
@@ -95,37 +109,11 @@ app.get(
     });
 });
 
-//Facebook connect
-passport.use(
-  new FacebookStrategy(
-    {
-      clientID: process.env.CLIENT_ID,
-      clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: process.env.REDIRECT_URI
-    },
-    function(accessToken, refreshToken, profile, callback) {
-      FB.api(
-        "me",
-        { fields: "id,name,email", access_token: accessToken },
-        function(user) {
-          database.findOrCreateUser(user)
-            .then(user => {
-              callback(null, user);
-            })
-            .catch(error => {
-              callback(error);
-            })
-        }
-      );
-    }
-  )
-);
-
-// app.get("/", function(request, result) {
-//   result.redirect(`/dashboard/${request.user.id}`, {
-//     user: request.user
-//   });
-// });
+app.get("/", function(request, result) {
+  result.redirect(`/dashboard/${request.user.id}`, {
+    user: request.user
+  });
+});
 
 app.get(
   "/auth/facebook",
