@@ -90,6 +90,7 @@ app.get("/dashboard/:id", function(request, result) {
 });
 
 app.get("/balance/:id", function(request, result) {
+  //temporary
   result.render("balance")
 });
 
@@ -113,15 +114,19 @@ app.get("/logout", function(request, result) {
 app.get("/finalize_activity/:id", function(request, result) {
   database.finalizeActivity(request.params.id)
   .then(function(activities) {
-    return result.redirect("/")
+    return result.redirect(`/dashboard/${request.user.id}`)
   })
 });
 
 app.get("/addexpense/:id", function(request, result) {
   database.addExpense(request.params.id, result)
-  // result.render("addexpense", {
-  //   activityId:request.params.id
-  // })
+});
+
+app.get("/reopen_activity/:id", function(request, result) {
+  database.reopenActivity(request.params.id)
+  .then(function(activities) {
+    return result.redirect(`/dashboard/${request.user.id}`)
+  })
 });
 
 app.listen(port, function(){
