@@ -6,20 +6,27 @@ function fakeTest(number) {
   return number + 1
 }
 
-
-function findUser(email, password) {
+function findUser(email, password, callback) {
   const client = new PG.Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-});
+    connectionString: process.env.DATABASE_URL,
+    ssl: true,
+  });
   const hash=sha256(password);
   client.connect();
   return client.query(
-    "SELECT * from users WHERE name=$1 and password=$2",
-    [email,hash]).then(res => {
-    client.end();
-    return res.rows[0];
+    "SELECT * from users WHERE email=$1 and password=$2",
+    [email,hash])
+    .then(res => {
+      client.end();
+      if (res.rows.length === 0) {
+        callback("User does not exist");
+      }
+
+      callback(null, res.rows[0]);
     })
+    .catch(error => {
+      callback(error);
+    });
 }
 
 function findUserById(id) {
@@ -43,7 +50,7 @@ function register(user,request,result) {
   });
   const hash=sha256(user.password);
   client.connect();
-  client.query("INSERT INTO users (id,name, password) VALUES (uuid_generate_v4(),$1,$2) RETURNING *", [user.username, hash])
+  client.query("INSERT INTO users (id,email, password) VALUES (uuid_generate_v4(),$1,$2) RETURNING *", [user.username, hash])
     .then(res => {
       request.logIn(res.rows[0], function(error) {
         if (error) {
@@ -186,7 +193,6 @@ function viewExpense(activityId, result) {
 }
 
 function addNewExpense(activityId, expense, request, result) {
-  console.log("TOTO");
   console.log(activityId);
   console.log(expense.expense_descr);
   const client = new PG.Client({

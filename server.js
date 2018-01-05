@@ -46,13 +46,7 @@ app.post("/register", function(request, result) {
 
 passport.use(
   new LocalStrategy(function(email, password, callback) {
-    database.findUser(email, password)
-    .then(user => {
-      callback(null, user);
-    })
-    .catch(error => {
-      callback(error);
-    });
+    database.findUser(email, password, callback)
   })
 );
 
@@ -89,6 +83,7 @@ app.post(
   "/login",
   passport.authenticate("local", { failureRedirect: "/login" }),
   function(request, result) {
+    console.log("prout2");
     result.redirect(`/dashboard/${request.user.id}`);
   }
 );
