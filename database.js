@@ -283,7 +283,7 @@ function getBalance(id,result) {
   });
   client.connect();
   client.query(
-    "select buyer_id,amount,id from expenses WHERE activity_id=$1;",
+    "select buyer_id, users.name, amount,id from expenses inner join users on users.id=expenses.buyer_id WHERE activity_id=$1;",
     [id])
     .then(res => {
       let listexpense="(";
@@ -296,7 +296,7 @@ function getBalance(id,result) {
         }
       }
       console.log(listexpense);
-      client.query("Select expense_id, user_id from users_expenses where expense_id in"+ listexpense)
+      client.query("Select expense_id, user_id,users.name from users_expenses inner join users on users.id=users_expenses.user_id where expense_id in"+ listexpense)
       .then(res2 => {
         client.end()
         console.log(res2.rows[0]);
