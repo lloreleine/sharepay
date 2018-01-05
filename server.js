@@ -151,8 +151,7 @@ app.get("/dashboard/:id", function(request, result) {
 });
 
 app.get("/balance/:id", function(request, result) {
-  //temporary
-  result.render("balance")
+  database.getBalance(request.params.id,result)
 });
 
 app.get("/finalize_activity/:id", function(request, result) {
