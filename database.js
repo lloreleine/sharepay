@@ -1,6 +1,10 @@
 const fetch = require("node-fetch");
 const PG = require("pg");
 const sha256 = require('js-sha256').sha256;
+const { createTransaction, payback } = require('./payback');
+const { Pool } = require("pg");
+const pool = new Pool();
+
 
 function fakeTest(number) {
   return number + 1
@@ -268,6 +272,71 @@ function addActivity(activity,request, result) {
     })
 }
 
+function getBalance(id,result,request) {
+  const transactions=[];
+  const userexpense=[];
+  const fullusers=[];
+
+  const client = new PG.Client({
+   connectionString: process.env.DATABASE_URL,
+   ssl: true,
+  });
+  client.connect();
+  client.query(
+    // "select buyer_id,users.name,amount,expenses.id from expenses inner join users on users.id=expenses.buyer_id WHERE activity_id=$1;",
+    "select expenses.buyer_id, users.name, expenses.amount, expenses.id from expenses INNER JOIN users on users.id=expenses.buyer_id WHERE activity_id=$1;",
+    [id])
+    .then(res => {
+      let listexpense="(";
+      for(i=0; i<res.rows.length; i++){
+        if(i===(res.rows.length-1)){
+          listexpense = listexpense+`'${res.rows[i].id}')`;
+        }else{
+          listexpense = listexpense+`'${res.rows[i].id}',`;
+        }
+      }
+      client.query("Select users_expenses.expense_id, users_expenses.user_id,users.name from users_expenses INNER JOIN users on users.id=users_expenses.user_id where expense_id in"+ listexpense)
+      .then(res2 => {
+        client.end()
+        for(i=0; i<res.rows.length; i++){
+        const userexpense=[];
+          for(j=0; j<res2.rows.length; j++){
+            if (res2.rows[j].expense_id===res.rows[i].id) {
+              userexpense.push(res2.rows[j].name);
+            }
+          }
+        transactions.push(createTransaction(res.rows[i].name,res.rows[i].amount,userexpense));
+        }
+        for(k=0; k<res2.rows.length; k++){
+          if (fullusers.includes(res2.rows[k].user_id)) {
+          }
+          else {
+            fullusers.push(res2.rows[k].name);
+          }
+        }
+        const board=payback(transactions, fullusers);
+
+        return result.render("balance", {
+         board : board,
+         user_current: request.user.id
+        })
+      })
+      .catch(error => console.warn(error))
+    });
+}
+
+  // const cinema = createTransaction('alice', 440, ['alice', 'bob', 'charlie', 'damian']);
+  // //buyer/montant/beneficiaire
+  // const food = createTransaction('bob', 450, ['bob', 'charlie', 'damian']);
+  // const taxi = createTransaction('charlie', 100, ['charlie', 'alice']);
+  // const drinks = createTransaction('damian', 150, ['damian', 'alice', 'bob']);
+  // const rentDamian = createTransaction('damian', 200, ['alice', 'bob', 'charlie', 'damian']);
+  // const rentCharlie = createTransaction('charlie', 400, ['alice', 'bob', 'charlie', 'damian']);
+  // const transactions = [cinema, food, taxi, drinks, rentDamian, rentCharlie];
+  //
+  // payback(transactions, ['alice', 'bob', 'charlie', 'damian']);
+
+
 module.exports = {
   fakeTest: fakeTest,
   getCurrentActivities: getCurrentActivities,
@@ -282,5 +351,6 @@ module.exports = {
   addNewExpense:addNewExpense,
   addActivity:addActivity,
   getActivity:getActivity,
-  findOrCreateUser: findOrCreateUser
+  findOrCreateUser: findOrCreateUser,
+  getBalance:getBalance
 }

@@ -7,9 +7,20 @@
 {% block content %}
 <div class="container">
   {# temporary #}
-  <a href="/dashboard/">
+  <a href="/dashboard/{{user_current}}">
     <button type="button" class="btn btn-dark">Dashboard</button>
   </a>
   <h2>Balance</h2>
+
+  <div>
+    {% for element in board %}
+    <div>
+        <p>from {{element.from}}</p>
+        <p>to {{element.to}}</p>
+        <p>value {{element.value}}</p>
+    </div>
+  </div>
+    {% endfor %}
+  </div>
 </div>
 {% endblock %}
