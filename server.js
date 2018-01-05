@@ -122,11 +122,22 @@ app.get("/addexpense/:id", function(request, result) {
   database.viewExpense(request.params.id, result)
 });
 
+app.get("/addactivity", function(request, result) {
+  database.getActivity(request, result)
+});
+
 app.post("/addexpense/new/:id", function(request, result) {
   console.log(`request.body.expense_cost : ${request.body.expense_cost}`);
   database.addNewExpense(request.params.id, request.body, request, result)
   .then(function(expense) {
     return result.redirect(`/view_activity/${request.params.id}`)
+  })
+});
+
+app.post("/addactivity/new", function(request, result) {
+  database.addActivity(request.body, request, result)
+  .then(function(activity) {
+    return result.redirect(`/dashboard/${request.user.id}`)
   })
 });
 

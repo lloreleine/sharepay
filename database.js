@@ -103,6 +103,7 @@ function viewActivity(activityId, request,result) {
               if(error){
                 console.warn(error);
               }
+              console.log(result2.rows);
               result.render("view_activity", {
                 expenses : result1.rows,
                 amounts_sum : result2.rows,
@@ -146,7 +147,8 @@ function viewExpense(activityId, result) {
   });
   client.connect();
   client.query(
-    "SELECT name, users.id FROM expenses INNER JOIN users ON users.id=expenses.buyer_id WHERE activity_id=$1::uuid GROUP BY name, users.id;",
+    // "SELECT name, users.id FROM expenses INNER JOIN users ON users.id=expenses.buyer_id WHERE activity_id=$1::uuid GROUP BY name, users.id;",
+    "SELECT name, users.id FROM users_activities INNER JOIN users ON users.id=user_id WHERE activity_id=$1::uuid GROUP BY name, users.id;",
     [activityId],
     function(error, result1){
       if(error){
@@ -192,6 +194,52 @@ function addNewExpense(activityId, expense, request, result) {
     })
 }
 
+function getActivity(request, result) {
+  const client = new PG.Client({
+   connectionString: process.env.DATABASE_URL,
+   ssl: true,
+  });
+  client.connect();
+  client.query(
+    "SELECT name, users.id FROM users;",
+    [],
+    function(error, result1){
+      if(error){
+        console.warn(error);
+      }
+      result.render("addactivity", {
+        users:result1.rows,
+        current:request.user.id
+      });
+      client.end();
+    }
+  );
+}
+
+function addActivity(activity,request, result) {
+  const client = new PG.Client({
+   connectionString: process.env.DATABASE_URL,
+   ssl: true,
+  });
+  client.connect();
+  return client.query("INSERT INTO activities (id, title, status,location, date) VALUES (uuid_generate_v4(),$1,TRUE,$2,$3) RETURNING *", [activity.activity_descr, activity.activity_loc,activity.activity_date])
+    .then(res => {
+      let arrayBenefits = "";
+      for(i=0; i<activity.benefits.length; i++){
+        if(i===(activity.benefits.length-1)){
+          arrayBenefits = arrayBenefits+`('${activity.benefits[i]}','${res.rows[0].id}')`;
+        }else{
+          arrayBenefits = arrayBenefits+`('${activity.benefits[i]}','${res.rows[0].id}'),`;
+        }
+      }
+      client.query("INSERT INTO users_activities (user_id, activity_id) VALUES " + arrayBenefits)
+      .then(_res => {
+        client.end()
+      })
+      .catch(error => console.warn(error))
+    })
+}
+
 module.exports = {
   fakeTest: fakeTest,
   getCurrentActivities: getCurrentActivities,
@@ -203,5 +251,7 @@ module.exports = {
   finalizeActivity: finalizeActivity,
   reopenActivity: reopenActivity,
   viewExpense:viewExpense,
-  addNewExpense:addNewExpense
+  addNewExpense:addNewExpense,
+  addActivity:addActivity,
+  getActivity:getActivity
 }
