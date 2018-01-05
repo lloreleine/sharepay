@@ -1,5 +1,6 @@
 const fetch = require("node-fetch");
 const PG = require("pg");
+const sha256 = require('js-sha256').sha256;
 
 function fakeTest(number) {
   return number + 1
@@ -11,10 +12,11 @@ function findUser(email, password) {
   connectionString: process.env.DATABASE_URL,
   ssl: true,
 });
+  const hash=sha256(password);
   client.connect();
   return client.query(
     "SELECT * from users WHERE name=$1 and password=$2",
-    [email,password]).then(res => {
+    [email,hash]).then(res => {
     client.end();
     return res.rows[0];
     })
@@ -39,8 +41,9 @@ function register(user,request,result) {
    connectionString: process.env.DATABASE_URL,
    ssl: true,
   });
+  const hash=sha256(user.password);
   client.connect();
-  client.query("INSERT INTO users (id,name, password) VALUES (uuid_generate_v4(),$1,$2) RETURNING *", [user.username, user.password])
+  client.query("INSERT INTO users (id,name, password) VALUES (uuid_generate_v4(),$1,$2) RETURNING *", [user.username, hash])
     .then(res => {
       request.logIn(res.rows[0], function(error) {
         if (error) {
