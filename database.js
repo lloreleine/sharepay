@@ -50,7 +50,7 @@ function register(user,request,result) {
   });
   const hash=sha256(user.password);
   client.connect();
-  client.query("INSERT INTO users (id,email, password) VALUES (uuid_generate_v4(),$1,$2) RETURNING *", [user.username, hash])
+  client.query("INSERT INTO users (id, name, email, password) VALUES (uuid_generate_v4(),$1,$2,$3) RETURNING *", [user.username, user.email, hash])
     .then(res => {
       request.logIn(res.rows[0], function(error) {
         if (error) {
