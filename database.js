@@ -130,6 +130,10 @@ function finalizeActivity(activityId) {
 }
 
 function reopenActivity(activityId) {
+  const client = new PG.Client({
+   connectionString: process.env.DATABASE_URL,
+   ssl: true,
+  });
   client.connect();
   return client.query("UPDATE activities SET status=TRUE WHERE id=$1::uuid",[activityId])
     .then(res => client.end())

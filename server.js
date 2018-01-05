@@ -125,7 +125,7 @@ app.get("/addexpense/:id", function(request, result) {
 app.get("/reopen_activity/:id", function(request, result) {
   database.reopenActivity(request.params.id)
   .then(function(activities) {
-    return result.redirect(`/viewActivity/${request.params.id}`)
+    return result.redirect(`/dashboard/${request.user.id}`)
   })
 });
 
