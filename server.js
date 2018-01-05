@@ -151,7 +151,7 @@ app.get("/dashboard/:id", function(request, result) {
 });
 
 app.get("/balance/:id", function(request, result) {
-  database.getBalance(request.params.id,result)
+  database.getBalance(request.params.id,result,request)
 });
 
 app.get("/finalize_activity/:id", function(request, result) {

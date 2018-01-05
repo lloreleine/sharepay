@@ -272,7 +272,7 @@ function addActivity(activity,request, result) {
     })
 }
 
-function getBalance(id,result) {
+function getBalance(id,result,request) {
   const transactions=[];
   const userexpense=[];
   const fullusers=[];
@@ -283,11 +283,11 @@ function getBalance(id,result) {
   });
   client.connect();
   client.query(
-    "select buyer_id, users.name, amount,id from expenses inner join users on users.id=expenses.buyer_id WHERE activity_id=$1;",
+    // "select buyer_id,users.name,amount,expenses.id from expenses inner join users on users.id=expenses.buyer_id WHERE activity_id=$1;",
+    "select expenses.buyer_id, users.name, expenses.amount, expenses.id from expenses INNER JOIN users on users.id=expenses.buyer_id WHERE activity_id=$1;",
     [id])
     .then(res => {
       let listexpense="(";
-      console.log("toto" + res.rows[0].id);
       for(i=0; i<res.rows.length; i++){
         if(i===(res.rows.length-1)){
           listexpense = listexpense+`'${res.rows[i].id}')`;
@@ -295,37 +295,30 @@ function getBalance(id,result) {
           listexpense = listexpense+`'${res.rows[i].id}',`;
         }
       }
-      console.log(listexpense);
-      client.query("Select expense_id, user_id,users.name from users_expenses inner join users on users.id=users_expenses.user_id where expense_id in"+ listexpense)
+      client.query("Select users_expenses.expense_id, users_expenses.user_id,users.name from users_expenses INNER JOIN users on users.id=users_expenses.user_id where expense_id in"+ listexpense)
       .then(res2 => {
         client.end()
-        console.log(res2.rows[0]);
         for(i=0; i<res.rows.length; i++){
-        console.log(res.rows[i].buyer_id);
-        console.log(res.rows[i].amount);
         const userexpense=[];
           for(j=0; j<res2.rows.length; j++){
             if (res2.rows[j].expense_id===res.rows[i].id) {
-              userexpense.push(res2.rows[j].user_id);
+              userexpense.push(res2.rows[j].name);
             }
           }
-        console.log(userexpense);
-        transactions.push(createTransaction(res.rows[i].buyer_id,res.rows[i].amount,userexpense));
+        transactions.push(createTransaction(res.rows[i].name,res.rows[i].amount,userexpense));
         }
-        console.log(transactions);
         for(k=0; k<res2.rows.length; k++){
           if (fullusers.includes(res2.rows[k].user_id)) {
           }
           else {
-            fullusers.push(res2.rows[k].user_id);
+            fullusers.push(res2.rows[k].name);
           }
         }
-        console.log(fullusers);
         const board=payback(transactions, fullusers);
-        console.log(board);
-        console.log("toto");
+
         return result.render("balance", {
-         board : board
+         board : board,
+         user_current: request.user.id
         })
       })
       .catch(error => console.warn(error))
