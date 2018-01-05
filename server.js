@@ -104,9 +104,7 @@ app.get(
 });
 
 app.get("/", function(request, result) {
-  result.redirect(`/dashboard/${request.user.id}`, {
-    user: request.user
-  });
+  result.redirect("/login");
 });
 
 app.get(
