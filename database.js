@@ -139,28 +139,58 @@ function reopenActivity(activityId) {
     .then(res => client.end())
 }
 
-function addExpense(activityId, result) {
+function viewExpense(activityId, result) {
   const client = new PG.Client({
    connectionString: process.env.DATABASE_URL,
    ssl: true,
   });
   client.connect();
   client.query(
-    "SELECT name FROM expenses INNER JOIN users ON users.id=expenses.buyer_id WHERE activity_id=$1::uuid GROUP BY name;",
+    "SELECT name, users.id FROM expenses INNER JOIN users ON users.id=expenses.buyer_id WHERE activity_id=$1::uuid GROUP BY name, users.id;",
     [activityId],
     function(error, result1){
       if(error){
         console.warn(error);
       }
-      console.log(result1.rows);
       result.render("addexpense", {
-        expenses:result1.rows
+        expenses:result1.rows,
+        activityId:activityId
       });
       client.end();
     }
   );
 }
 
+function addNewExpense(activityId, expense, request, result) {
+  console.log("TOTO");
+  console.log(activityId);
+  console.log(expense.expense_descr);
+  const client = new PG.Client({
+   connectionString: process.env.DATABASE_URL,
+   ssl: true,
+  });
+  client.connect();
+  return client.query("INSERT INTO expenses (id, title, amount, activity_id, buyer_id) VALUES (uuid_generate_v4(),$1,$2,$3,(SELECT id FROM users WHERE name=$4)) RETURNING *", [expense.expense_descr, expense.expense_cost, activityId, expense.expense_buyer])
+    .then(res => {
+      let arrayBenefits = "";
+      console.log(expense);
+
+      for(i=0; i<expense.benefits.length; i++){
+        if(i===(expense.benefits.length-1)){
+          console.log("entré dans le if");
+          arrayBenefits = arrayBenefits+`('${res.rows[0].id}','${expense.benefits[i]}')`;
+        }else{
+          arrayBenefits = arrayBenefits+`('${res.rows[0].id}','${expense.benefits[i]}'),`;
+        }
+      }
+      console.log(arrayBenefits);
+      client.query("INSERT INTO users_expenses (expense_id, user_id) VALUES " + arrayBenefits)
+      .then(_res => {
+        client.end()
+      })
+      .catch(error => console.warn(error))
+    })
+}
 
 module.exports = {
   fakeTest: fakeTest,
@@ -171,6 +201,7 @@ module.exports = {
   findUserById:findUserById,
   findUser:findUser,
   finalizeActivity: finalizeActivity,
-  addExpense:addExpense,
-  reopenActivity: reopenActivity
+  reopenActivity: reopenActivity,
+  viewExpense:viewExpense,
+  addNewExpense:addNewExpense
 }
