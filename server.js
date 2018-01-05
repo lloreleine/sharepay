@@ -83,7 +83,6 @@ app.post(
   "/login",
   passport.authenticate("local", { failureRedirect: "/login" }),
   function(request, result) {
-    console.log("prout2");
     result.redirect(`/dashboard/${request.user.id}`);
   }
 );
