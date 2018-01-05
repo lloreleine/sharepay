@@ -197,8 +197,8 @@ app.get("/updateactivity/:id", function(request, result) {
   database.displayActivity(request.params.id, request, result)
 });
 
-app.post("/updatetitle/:id", function(request, result) {
-  database.updateTitle(request.params.id, request.body, request, result)
+app.post("/updateact/:id", function(request, result) {
+  database.updateAct(request.params.id, request.body, request, result)
   .then(function(update) {
     return result.redirect(`/updateactivity/${request.params.id}`)
   })

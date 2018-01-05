@@ -14,16 +14,19 @@
   {# <h3>Activity ID: {{activity.id}}</h3> #}
 
   <h3>Activity: {{activity.title}}</h3>
-  <form action="/updatetitle/{{activity.id}}" method="POST">
+  <form action="/updateact/{{activity.id}}" method="POST">
     <input type="text" placeholder="New Title" name="new_title"/> &nbsp;&nbsp;
     <button type="submit">Update the title</button>
+
+    <h3>Current location: {{activity.location}}</h3>
+    <input type="text" placeholder="New Location" name="new_location"/> &nbsp;&nbsp;
+    <button type="submit">Update the location</button>
+
+    <h3>Current date: {{activity.date}}</h3>
+    <input type="date" placeholder="New Date" name="new_date"/> &nbsp;&nbsp;
+    <button type="submit">Update the date</button>
+
   </form>
-
-  <h3>Current location: {{activity.location}}</h3>
-  <button type="button">Update the location</button>
-
-  <h3>Current date: {{activity.date}}</h3>
-  <button type="button">Update the date</button>
 
   <h3>Users involved:</h3>
   <ul>

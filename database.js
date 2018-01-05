@@ -313,15 +313,13 @@ function displayActivity(activityId, request, result) {
   );
 }
 
-function updateTitle(activityId, update, request, result) {
+function updateAct(activityId, update, request, result) {
   const client = new PG.Client({
    connectionString: process.env.DATABASE_URL,
    ssl: true,
   });
-  console.log("update :");
-  console.log(update);
   client.connect();
-  return client.query("UPDATE activities SET title=$1 WHERE id=$2::uuid",[update.new_title,activityId])
+  return client.query("UPDATE activities SET title=$1, location=$2, date=$3 WHERE id=$4::uuid",[update.new_title,update.new_location,update.new_date,activityId])
     .then(res => client.end())
 }
 
@@ -330,8 +328,6 @@ function updateParticipants(activityId, update, request, result) {
    connectionString: process.env.DATABASE_URL,
    ssl: true,
   });
-  console.log("update :");
-  console.log(update);
   client.connect();
   return client.query("UPDATE activities SET title=$1 WHERE id=$2::uuid",[update.new_title,activityId])
     .then(res => client.end())
@@ -407,6 +403,6 @@ module.exports = {
   findOrCreateUser: findOrCreateUser,
   getBalance:getBalance,
   displayActivity:displayActivity,
-  updateTitle:updateTitle,
-  updateParticipants:updateParticipants
+  updateParticipants:updateParticipants,
+  updateAct:updateAct
 }
