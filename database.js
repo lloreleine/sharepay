@@ -140,6 +140,12 @@ function reopenActivity(activityId) {
     .then(res => client.end())
 }
 
+function findOrCreateUser(user) {
+  // return client.query("INSERT INTO users (id, name, email) VALUES (uuid_generate_v4(),$1,$2)",[user.name], [user.email])
+  return client.query("INSERT INTO users (id, name, email) VALUES (uuid_generate_v4(), 'jeanmich', 'jeanmich@wanadoo.com')")
+    .then(res => client.end())
+}
+
 function viewExpense(activityId, result) {
   const client = new PG.Client({
    connectionString: process.env.DATABASE_URL,
@@ -253,5 +259,6 @@ module.exports = {
   viewExpense:viewExpense,
   addNewExpense:addNewExpense,
   addActivity:addActivity,
-  getActivity:getActivity
+  getActivity:getActivity,
+  findOrCreateUser: findOrCreateUser
 }

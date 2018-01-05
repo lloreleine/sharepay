@@ -16,7 +16,7 @@
 </head>
 <body>
   <nav class="navbar navbar-toggleable-md navbar-light bg-dark">
-    <a class="navbar-brand text-white" href="/dashboard">
+    <a class="navbar-brand text-white" href="/dashboard/{{id}}">
       <img src="../images/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
       PAY SHARE
     </a>
@@ -24,6 +24,7 @@
   </nav>
 
   <p class="jumbotron"></p>
+  <div id="fb-root"></div>
 
   {% block content %}{% endblock %}
 
@@ -31,6 +32,5 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
-
 </body>
 </html>

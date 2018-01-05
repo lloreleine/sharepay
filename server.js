@@ -6,6 +6,8 @@ const database = require("./database.js");
 const port = process.env.PORT || 3000;
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const FacebookStrategy = require("passport-facebook").Strategy;
+const FB = require("fb");
 
 nunjucks.configure("views", {
   autoescape:true,
@@ -33,6 +35,16 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+//Registration
+app.get("/register", function(request, result) {
+  result.render("register");
+});
+
+app.post("/register", function(request, result) {
+  database.register(request.body,request,result);
+});
+
+//Login system
 passport.serializeUser(function(user, callback) {
   return callback(null, user.id);
 });
@@ -55,14 +67,83 @@ passport.use(
   })
 );
 
-app.get("/register", function(request, result) {
-  result.render("register");
-});
-
 app.get("/login", function(request, result) {
   result.render("login");
 });
 
+app.post(
+  "/login",
+  passport.authenticate("local", { failureRedirect: "/login" }),
+  function(request, result) {
+    result.redirect(`/dashboard/${request.user.id}`);
+  }
+);
+
+app.get("/logout", function(request, result) {
+  request.logout();
+  result.redirect("/login");
+});
+
+app.get(
+  "/profile",
+  require("connect-ensure-login").ensureLoggedIn(),
+  function(request, result) {
+    result.render("profile", {
+      id: request.user.id,
+      name: request.user.name,
+      emails: request.user.emails
+    });
+});
+
+//Facebook connect
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: process.env.CLIENT_ID,
+      clientSecret: process.env.CLIENT_SECRET,
+      callbackURL: process.env.REDIRECT_URI
+    },
+    function(accessToken, refreshToken, profile, callback) {
+      FB.api(
+        "me",
+        { fields: "id,name,email", access_token: accessToken },
+        function(user) {
+          database.findOrCreateUser(user)
+            .then(user => {
+              callback(null, user);
+            })
+            .catch(error => {
+              callback(error);
+            })
+        }
+      );
+    }
+  )
+);
+
+// app.get("/", function(request, result) {
+//   result.redirect(`/dashboard/${request.user.id}`, {
+//     user: request.user
+//   });
+// });
+
+app.get(
+  "/auth/facebook",
+  passport.authenticate("facebook", {
+    authType: "rerequest", // rerequest is here to ask again if login was denied once,
+    scope: ["email"]
+  })
+);
+
+app.get(
+  "/auth/facebook/callback",
+  passport.authenticate("facebook", { failureRedirect: "/login" }),
+  function(request, result) {
+    result.redirect(`/dashboard/${request.user.id}`);
+  }
+);
+
+//Sharepay
 app.get("/view_activity/:id", function(request, result) {
   database.viewActivity(request.params.id, request,result)
 });
@@ -92,23 +173,6 @@ app.get("/dashboard/:id", function(request, result) {
 app.get("/balance/:id", function(request, result) {
   //temporary
   result.render("balance")
-});
-
-app.post(
-  "/login",
-  passport.authenticate("local", { failureRedirect: "/login" }),
-  function(request, result) {
-    result.redirect(`/dashboard/${request.user.id}`);
-  }
-);
-
-app.post("/register", function(request, result) {
-  database.register(request.body,request,result);
-});
-
-app.get("/logout", function(request, result) {
-  request.logout();
-  result.redirect("/login");
 });
 
 app.get("/finalize_activity/:id", function(request, result) {
