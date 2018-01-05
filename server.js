@@ -46,13 +46,7 @@ app.post("/register", function(request, result) {
 
 passport.use(
   new LocalStrategy(function(email, password, callback) {
-    database.findUser(email, password)
-    .then(user => {
-      callback(null, user);
-    })
-    .catch(error => {
-      callback(error);
-    });
+    database.findUser(email, password, callback)
   })
 );
 
@@ -61,7 +55,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: process.env.REDIRECT_URI,
+      callbackURL: "https://morning-river-76119.herokuapp.com/auth/facebook/callback",
       profileFields: ['id', 'displayName', 'email']
     },
     function(accessToken, refreshToken, profile, callback) {

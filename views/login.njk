@@ -6,49 +6,48 @@
 
 {% block content %}
 <div class="container text-center" >
+  <div class="card">
+    <div class="card-body">
 
-<div class="card">
-  <div class="card-body">
-    <h5 class="card-title">Login</h5>
+      <form action="/login" method="post">
+        <p>
+          <div>
+            <input type="text" placeholder="Enter email" class="form-control" name="username"/><br/>
+          </div>
+          <div>
+            <input type="password" class="form-control" placeholder="Password" name="password"/>
+          </div>
+          </p>
+          <div
+          <p>
 
-    <form action="/login" method="post">
-      <p>
+            <button type="submit" class="btn btn-success">
+              Log In
+            </button>
+          </div>
+          </p>
+
+      </form>
+      
 
       <div>
-        <label>Name:</label>
-        <input type="text" name="username"/><br/>
+        <p>
+        <a href="/register"><button type="button" class="btn btn-danger">
+          Sign Up
+        </button></a>
+        </p>
       </div>
-      <div>
-        <label>Password:</label>
-        <input type="password" name="password"/>
-      </div>
-      <div>
-        <button type="button" class="btn btn-success">
-          Connexion
-        </button>
-      </div>
-      </p>
-    </form>
 
-    <div>
-          <h5 class="card-title">You don't have an account?</h5>
+      <div>
+        <a href="/auth/facebook">
+          <button type="button" class="btn btn-primary">
+            Facebook Connect
+          </button>
+        </a>
+      </div>
 
-      <a href="/register"><button type="button" class="btn btn-success">
-        Subscribe
-      </button></a>
-      </p>
     </div>
-
-    <div>
-      <a href="/auth/facebook">
-        <button type="button" class="btn btn-primary">
-          Facebook Connect
-        </button>
-      </a>
-    </div>
-
   </div>
-</div>
 </div>
 
 {% endblock %}
