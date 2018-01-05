@@ -1,0 +1,49 @@
+{% extends "layout.njk" %}
+
+{% block title %}
+  <title>Pay Share - Add Activity</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <a href="/dashboard/{{current}}"><button type="button" class="btn btn-dark">Dashboard</button></a>
+
+  <form action="/addactivity/new" method="POST">
+    <div>
+      <div>
+        <label>Describe your activity</label><br/>
+        <input type="text" placeholder="Your activity label" name="activity_descr"/>
+      </div>
+      <div>
+        <label>Enter date of your activity  </label><br/>
+        <input type="date" placeholder="Your activity date" name="activity_date"/>
+      </div>
+      <div>
+        <label>Enter location of your activity </label><br/>
+        <input type="text" placeholder="Your activity location" name="activity_loc"/>
+      </div>
+      {# <div class="floatright">
+        <label>Paid by:</label>&nbsp;
+        <select name="expense_buyer">
+          {% for element in expenses %}<option>{{element.name}}</option>{% endfor %}
+        </select>
+      </div> #}
+    </div>
+
+    <fieldset>
+      <legend>Add participants</legend>
+      {% for element in users %}
+      <div>
+        <input type="checkbox" name="benefits" value="{{element.id}}">
+        <label for="{{element.name}}">{{element.name}}</label>
+      </div>
+      {% endfor %}
+    </fieldset>
+
+    <button type="submit" class="btn btn-dark"><i class="far fa-save"></i>&nbsp;&nbsp;Save the activity</button>
+  </form>
+
+
+</div>
+
+{% endblock %}
