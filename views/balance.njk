@@ -14,12 +14,12 @@
 
   <div>
     {% for element in board %}
-    <div>
-        <p>from {{element.from}}</p>
-        <p>to {{element.to}}</p>
-        <p>value {{element.value}}</p>
+    <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">Transaction</h5>
+      </div>
+      <p class="mb-1"> {{element.from}} should give {{element.value}} € to {{element.to}} </p>
     </div>
-  </div>
     {% endfor %}
   </div>
 </div>

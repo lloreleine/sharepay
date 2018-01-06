@@ -283,7 +283,6 @@ function getBalance(id,result,request) {
   });
   client.connect();
   client.query(
-    // "select buyer_id,users.name,amount,expenses.id from expenses inner join users on users.id=expenses.buyer_id WHERE activity_id=$1;",
     "select expenses.buyer_id, users.name, expenses.amount, expenses.id from expenses INNER JOIN users on users.id=expenses.buyer_id WHERE activity_id=$1;",
     [id])
     .then(res => {
@@ -315,7 +314,7 @@ function getBalance(id,result,request) {
           }
         }
         const board=payback(transactions, fullusers);
-
+        const board2=board.map(x => x.value=(Math.round(x.value*100)/100).toFixed(2));
         return result.render("balance", {
          board : board,
          user_current: request.user.id
@@ -324,18 +323,6 @@ function getBalance(id,result,request) {
       .catch(error => console.warn(error))
     });
 }
-
-  // const cinema = createTransaction('alice', 440, ['alice', 'bob', 'charlie', 'damian']);
-  // //buyer/montant/beneficiaire
-  // const food = createTransaction('bob', 450, ['bob', 'charlie', 'damian']);
-  // const taxi = createTransaction('charlie', 100, ['charlie', 'alice']);
-  // const drinks = createTransaction('damian', 150, ['damian', 'alice', 'bob']);
-  // const rentDamian = createTransaction('damian', 200, ['alice', 'bob', 'charlie', 'damian']);
-  // const rentCharlie = createTransaction('charlie', 400, ['alice', 'bob', 'charlie', 'damian']);
-  // const transactions = [cinema, food, taxi, drinks, rentDamian, rentCharlie];
-  //
-  // payback(transactions, ['alice', 'bob', 'charlie', 'damian']);
-
 
 module.exports = {
   fakeTest: fakeTest,
