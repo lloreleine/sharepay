@@ -203,8 +203,10 @@ app.get("/reopen_activity/:id", function(request, result) {
   })
 });
 
-app.get("/updateactivity/:id", function(request, result) {
-  database.displayActivity(request.params.id, request, result)
+app.get("/updateactivity/:id",
+  require("connect-ensure-login").ensureLoggedIn("/login"),
+  function(request, result) {
+    database.displayActivity(request.params.id, request, result)
 });
 
 app.post("/updateact/:id", function(request, result) {
