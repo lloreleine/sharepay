@@ -13,7 +13,7 @@
 {% block content %}
 <div class="container">
   <a href="/addactivity"><button type="button" class="btn btn-dark">Add an activity</button></a>
-  <a href="/history"><button type="button" class="btn btn-dark">History</button></a>
+  <a href="/history/{{id}}"><button type="button" class="btn btn-dark">History</button></a>
   {% if activities[0].activity_id == null %}
     <h3>You have no current activity</h3>
   {% else %}

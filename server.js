@@ -128,14 +128,17 @@ app.get("/view_activity/:id", function(request, result) {
   database.viewActivity(request.params.id, request,result)
 });
 
-app.get("/history", function(request, result) {
-  database.getPastActivities(request.user.id)
-  .then((activities) => activities.rows)
-  .then(function(activities) {
-    return result.render("history", {
-     activities : activities,
-     id :request.user.id
-    })
+app.get("/history/:id",
+  require("connect-ensure-login").ensureLoggedIn("/login"),
+  function(request, result) {
+    database.getPastActivities(request.user.id)
+    .then((activities) => activities.rows)
+    .then(function(activities) {
+      return result.render("history", {
+       activities : activities,
+       id :request.user.id,
+       date : database.formatDate(activities.map(activities => activities.date))
+      })
   })
 });
 
@@ -147,7 +150,8 @@ app.get("/dashboard/:id",
     .then(function(activities) {
       return result.render("dashboard", {
        activities : activities,
-       date : database.formatDate(activities.map(activities => activities.date))
+       date : database.formatDate(activities.map(activities => activities.date)),
+       id :request.user.id
       })
   })
 });

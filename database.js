@@ -75,7 +75,7 @@ function getCurrentActivities(id) {
    ssl: true,
   });
   client.connect();
-  return client.query("SELECT * FROM users LEFT JOIN users_activities on users.id = users_activities.user_id LEFT JOIN activities on users_activities.activity_id = activities.id WHERE users.id = $1",[id]);
+  return client.query("SELECT * FROM users LEFT JOIN users_activities on users.id = users_activities.user_id LEFT JOIN activities on users_activities.activity_id = activities.id WHERE users.id = $1 and status = TRUE",[id]);
 }
 
 function getPastActivities(id) {
@@ -180,7 +180,6 @@ function viewExpense(activityId, request, result) {
   });
   client.connect();
   client.query(
-    // "SELECT name, users.id FROM expenses INNER JOIN users ON users.id=expenses.buyer_id WHERE activity_id=$1::uuid GROUP BY name, users.id;",
     "SELECT name, users.id FROM users_activities INNER JOIN users ON users.id=user_id WHERE activity_id=$1::uuid GROUP BY name, users.id;",
     [activityId],
     function(error, result1){
@@ -301,8 +300,6 @@ function addActivity(activity,request, result) {
     })
 }
 
-// SELECT user_id, name FROM users_activities INNER JOIN users ON users.id=users_activities.user_id WHERE activity_id=$1::uuid",[activityId],
-
 function displayActivity(activityId, request, result) {
   const client = new PG.Client({
    connectionString: process.env.DATABASE_URL,
@@ -377,9 +374,6 @@ function updateParticipants(activityId, update, request, result) {
     .then(res => client.end())
 }
 
-
-
-
 function getBalance(id,result,request) {
   const transactions=[];
   const userexpense=[];
@@ -433,7 +427,6 @@ function getBalance(id,result,request) {
 }
 
 function formatDate(date) {
-  console.log(date);
   if (date === null) {
     return false
   } else {

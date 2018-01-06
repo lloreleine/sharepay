@@ -21,10 +21,10 @@
       <div class="d-flex w-100 justify-content-between">
         <p> members: X, amount: Y €</p>
         {# to complete #}
-        <a href="/reopen_activity/{{activity.id}}"><button class="btn btn-dark"><i class="fas fa-search-plus"></i>&nbsp;Re-open activity</button></a>
+          <a href="/reopen_activity/{{activity.id}}"><button class="btn btn-dark mt-1"><i class="fas fa-search-plus"></i>&nbsp;Re-open activity</button></a>
       </div>
       <div class="d-flex w-100 justify-content-between">
-        <p class="mb-1"> {{activity.date}}, {{activity.location}} </p>
+        <small class="text-muted">{{date[loop.index0]}}</br>{{activity.location}}</small>
       </div>
     </div>
     {% endfor %}
