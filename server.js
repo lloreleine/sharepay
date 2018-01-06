@@ -164,7 +164,7 @@ app.get("/finalize_activity/:id", function(request, result) {
 });
 
 app.get("/addexpense/:id", function(request, result) {
-  database.viewExpense(request.params.id, result)
+  database.viewExpense(request.params.id, request, result)
 });
 
 app.get("/addactivity", function(request, result) {

@@ -173,7 +173,7 @@ function findOrCreateUser(profile, callback) {
   .catch(error => console.warn(error))
 }
 
-function viewExpense(activityId, result) {
+function viewExpense(activityId, request, result) {
   const client = new PG.Client({
    connectionString: process.env.DATABASE_URL,
    ssl: true,
@@ -187,9 +187,12 @@ function viewExpense(activityId, result) {
       if(error){
         console.warn(error);
       }
+      console.log("TOTO request.user.id");
+      console.log(request.user.id);
       result.render("addexpense", {
         expenses:result1.rows,
-        activityId:activityId
+        activityId:activityId,
+        userid:request.user.id
       });
       client.end();
     }
