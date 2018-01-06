@@ -11,8 +11,6 @@
     Finalize the activity
   </button>
 
-  {# <h3>Activity ID: {{activity.id}}</h3> #}
-
   <h3>Activity: {{activity.title}}</h3>
   <form action="/updateact/{{activity.id}}" method="POST">
     <input type="text" placeholder="New Title" name="new_title" value="{{activity.title}}"/> &nbsp;&nbsp;
@@ -27,11 +25,14 @@
   </form>
 
   <h3>Users currently involved:</h3>
-  <ul>
-    {%for element in participants %}
-    <li>{{element.name}}</li>
-    {% endfor %}
-  </ul>
+  <form action="/deletepart/{{activity.id}}" method="POST">
+    <ul>
+      {%for element in participants %}
+      <li style="margin-bottom:5px;"><input type="submit" value="{{element.name}}"/></li>
+      {% endfor %}
+    </ul>
+  </form>
+
   <form action="/updateparticipants/{{activity.id}}" method="POST">
       <h3>Do you want to add participants?</h3>
 
