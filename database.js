@@ -346,8 +346,6 @@ function displayActivity(activityId, request, result) {
 
               result1.rows[0].date=formatDate;
 
-              console.log(result3.rows);
-
               result.render("updateactivity", {
                 activity:result1.rows[0],
                 participants:result2.rows,
@@ -408,6 +406,32 @@ function updateParticipants(activityId, update, request, result) {
   });
   client.connect();
   return client.query("INSERT INTO users_activities (user_id, activity_id) VALUES ((SELECT id FROM users WHERE name=$1), $2)",[update.benefits,activityId])
+    .then(res => client.end())
+}
+
+function checkExpenseInvolved(activityId, update, request, result){
+  const client = new PG.Client({
+   connectionString: process.env.DATABASE_URL,
+   ssl: true,
+  });
+  client.connect();
+  return client.query("SELECT expenses.title, users_expenses.user_id FROM expenses INNER JOIN users_expenses ON users_expenses.expense_id=expenses.id WHERE activity_id=$1 AND users_expenses.user_id=$2;",[activityId,update.participants])
+    .then(res => {
+      if(res.rowCount===0){
+        deleteParticipants(activityId, update, request, result);
+      }
+      // console.log(res);
+      client.end()
+      })
+}
+
+function deleteParticipants(activityId, update, request, result) {
+  const client = new PG.Client({
+   connectionString: process.env.DATABASE_URL,
+   ssl: true,
+  });
+  client.connect();
+  return client.query("DELETE FROM users_activities WHERE user_id=$1 AND activity_id=$2",[update.participants,activityId])
     .then(res => client.end())
 }
 
@@ -492,5 +516,7 @@ module.exports = {
   updateAct:updateAct,
   formatDate:formatDate,
   editExpense:editExpense,
-  updateExp:updateExp
+  updateExp:updateExp,
+  deleteParticipants:deleteParticipants,
+  checkExpenseInvolved:checkExpenseInvolved
 }

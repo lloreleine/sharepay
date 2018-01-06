@@ -28,14 +28,16 @@
 
   </form>
 
-  <h3>Users currently involved:</h3>
-  <form action="/deletepart/{{activity.id}}" method="POST">
-    <ul>
+  <form action="/deleteparticipants/{{activity.id}}" method="POST">
+    <h3>Users currently involved:</h3>
+    <select name="participants">
       {%for element in participants %}
-      <li style="margin-bottom:5px;"><input type="submit" value="{{element.name}}"/></li>
+      <option value="{{element.user_id}}">{{element.name}}</option>
       {% endfor %}
-    </ul>
-  </form>
+    </select>
+    <br/><br/>
+  <button type="submit">Delete the participant</button>
+</form>
 
   <form action="/updateparticipants/{{activity.id}}" method="POST">
       <h3>Do you want to add participants?</h3>
@@ -86,9 +88,9 @@
  function displayUsers(entry) {
        list.innerHTML="";
         listuser.forEach(function(element) {
-         if (element.includes(entry))
+         if (((element).toLowerCase()).includes(entry.toLowerCase()))
          {
-         list.innerHTML=list.innerHTML+`<input type="checkbox" name="benefits" value=${element}>&nbsp;&nbsp;<label for=${element}>${element}</label><br/>`;
+         list.innerHTML=list.innerHTML+`<input type="checkbox" name="benefits" value="${element}">&nbsp;&nbsp;<label for=${element}>${element}</label><br/>`;
          }
        });
     }

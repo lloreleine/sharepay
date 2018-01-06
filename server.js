@@ -203,8 +203,10 @@ app.get("/reopen_activity/:id", function(request, result) {
   })
 });
 
-app.get("/updateactivity/:id", function(request, result) {
-  database.displayActivity(request.params.id, request, result)
+app.get("/updateactivity/:id",
+  require("connect-ensure-login").ensureLoggedIn("/login"),
+  function(request, result) {
+    database.displayActivity(request.params.id, request, result)
 });
 
 app.post("/updateact/:id", function(request, result) {
@@ -226,6 +228,13 @@ app.post("/updateexp/:id", function(request, result) {
   // .then(function(update) {
   //   return result.redirect(`/editexpense/${request.params.id}`)
   // })
+});
+
+app.post("/deleteparticipants/:id", function(request, result) {
+  database.checkExpenseInvolved(request.params.id, request.body, request, result)
+  .then(function(update) {
+    return result.redirect(`/updateactivity/${request.params.id}`)
+  })
 });
 
 app.listen(port, function(){
