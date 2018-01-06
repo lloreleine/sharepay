@@ -13,15 +13,15 @@
 
   <div class="list-group">
     {% for activity in activities %}
-    <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
+    <div class="list-group-item list-group-item-action flex-column align-items-start">
       <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-1">{{activity.title}}</h5>
-        <a href="/balance/{{activity.id}}"><button class="button"><i class="fas fa-search-plus"></i>&nbsp;View balance</button></a>
+        <a href="/balance/{{activity.id}}"><button class="btn btn-dark"><i class="fas fa-search-plus"></i>&nbsp;View balance</button></a>
       </div>
       <div class="d-flex w-100 justify-content-between">
         <p> members: X, amount: Y €</p>
         {# to complete #}
-        <a href="/reopen_activity/{{activity.id}}"><button class="button"><i class="fas fa-search-plus"></i>&nbsp;Re-open activity</button></a>
+        <a href="/reopen_activity/{{activity.id}}"><button class="btn btn-dark"><i class="fas fa-search-plus"></i>&nbsp;Re-open activity</button></a>
       </div>
       <div class="d-flex w-100 justify-content-between">
         <p class="mb-1"> {{activity.date}}, {{activity.location}} </p>

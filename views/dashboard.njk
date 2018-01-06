@@ -20,10 +20,10 @@
     <h2>Current Activities</h2>
     <div class="list-group">
       {% for activity in activities %}
-        <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
+        <div class="list-group-item list-group-item-action flex-column align-items-start">
           <div class="d-flex w-100 justify-content-between">
             <h5 class="mb-1">{{activity.title}}</h5>
-            <a href="/view_activity/{{activity.id}}"><button class="button"><i class="fas fa-search-plus"></i>&nbsp;View activity</button></a>
+            <a href="/view_activity/{{activity.id}}"><button class="btn btn-dark"><i class="fas fa-search-plus"></i>&nbsp;View activity</button></a>
           </div>
           <small class="text-muted">{{date}} </br> {{activity.location}}</small>
         </div>

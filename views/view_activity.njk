@@ -88,10 +88,10 @@
 
   <div class="list-group">
     {% for element in expenses %}
-    <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
+    <div class="list-group-item list-group-item-action flex-column align-items-start">
       <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-1">{{element.title}} by <em>{{element.name}}</em></h5>
-        <a href="/"><button class="floatright"><i class="fas fa-search-plus"></i>&nbsp;View Expense</button></a>
+        <a href="/"><button class="btn btn-dark floatright"><i class="fas fa-search-plus"></i>&nbsp;View Expense</button></a>
       </div>
       <p class="mb-1">for: {{element.count}}, amount: {{element.amount}} €</p>
     </div>
