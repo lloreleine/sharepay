@@ -139,14 +139,16 @@ app.get("/history", function(request, result) {
   })
 });
 
-app.get("/dashboard/:id", function(request, result) {
+app.get("/dashboard/:id",
   require("connect-ensure-login").ensureLoggedIn("/login"),
-  database.getCurrentActivities(request.params.id)
-  .then((activities) => activities.rows)
-  .then(function(activities) {
-    return result.render("dashboard", {
-     activities : activities
-    })
+  function(request, result) {
+    database.getCurrentActivities(request.params.id)
+    .then((activities) => activities.rows)
+    .then(function(activities) {
+      return result.render("dashboard", {
+       activities : activities,
+       date : activities[0].date.toLocaleDateString("en-EN",{weekday: "long", year: "numeric", month: "long", day: "numeric"})
+      })
   })
 });
 

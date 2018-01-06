@@ -35,9 +35,9 @@ function findUser(email, password, callback) {
 
 function findUserById(id) {
   const client = new PG.Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-});
+    connectionString: process.env.DATABASE_URL,
+    ssl: true,
+  });
   client.connect();
   return client.query(
     "SELECT * from users WHERE id=$1",
