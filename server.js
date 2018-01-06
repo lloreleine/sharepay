@@ -187,6 +187,7 @@ app.post("/addactivity/new", function(request, result) {
 });
 
 app.get("/editexpense/:id", function(request, result) {
+  require("connect-ensure-login").ensureLoggedIn("/login"),
   database.editExpense(request.params.id, request,result)
 });
 
