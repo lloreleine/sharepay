@@ -5,23 +5,28 @@
 {% endblock %}
 
 {% block content %}
-<form action="/register" method="post">
-  <div>
-    <label>Name:</label>
-    <input type="text" name="username"/><br/>
+<div class="container text-center" >
+  <div class="card border-light">
+    <div class="card-body">
+      <form action="/register" method="post">
+        <div>
+          <input type="text" placeholder="Name" name="username"/><br/>
+        </div>
+        <div>
+          <input type="text" placeholder="Email" name="email"/><br/>
+        </div>
+        <div>
+          <input type="password" placeholder="Password" name="password"/>
+        </div>
+        <p>
+          <div>
+            <button type="submit" class="btn btn-dark">
+              Sign up
+            </button>
+          </p>
+        </div>
+      </form>
+    </div>
   </div>
-  <div>
-    <label>Email:</label>
-    <input type="text" name="email"/><br/>
-  </div>
-  <div>
-    <label>Password:</label>
-    <input type="password" name="password"/>
-  </div>
-  <div>
-    <button type="submit" class="btn btn-dark">
-      Inscription
-    </button>
-  </div>
-</form>
+</div>
 {% endblock %}
