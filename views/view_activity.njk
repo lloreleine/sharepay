@@ -91,7 +91,7 @@
     <div class="list-group-item list-group-item-action flex-column align-items-start">
       <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-1">{{element.title}} by <em>{{element.name}}</em></h5>
-        <a href="/editexpense/{{element.id}}"><button class="btn btn-dark floatright"><i class="fas fa-search-plus"></i>&nbsp;Edit Expense</button></a>
+        <a href="/editexpense/activity/{{activityId}}/expense/{{element.id}}"><button class="btn btn-dark floatright"><i class="fas fa-search-plus"></i>&nbsp;Edit Expense</button></a>
       </div>
       <p class="mb-1">for: {{element.count}}, amount: {{element.amount}} €</p>
     </div>

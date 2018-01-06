@@ -190,10 +190,10 @@ app.post("/addactivity/new", function(request, result) {
   })
 });
 
-app.get("/editexpense/:id",
+app.get("/editexpense/activity/:activity_id/expense/:id",
   require("connect-ensure-login").ensureLoggedIn("/login"),
   function(request, result) {
-    database.editExpense(request.params.id, request,result)
+    database.editExpense(request.params.id, request.params.activity_id,request,result)
 });
 
 app.get("/reopen_activity/:id", function(request, result) {
@@ -219,6 +219,13 @@ app.post("/updateparticipants/:id", function(request, result) {
   .then(function(update) {
     return result.redirect(`/updateactivity/${request.params.id}`)
   })
+});
+
+app.post("/updateexp/:id", function(request, result) {
+  database.updateExp(request.params.id, request.body, request, result)
+  // .then(function(update) {
+  //   return result.redirect(`/editexpense/${request.params.id}`)
+  // })
 });
 
 app.listen(port, function(){

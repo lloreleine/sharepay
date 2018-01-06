@@ -250,14 +250,14 @@ function getActivity(request, result) {
 }
 
 
-function editExpense(id,request, result) {
+function editExpense(id,activity_id,request, result) {
   const client = new PG.Client({
    connectionString: process.env.DATABASE_URL,
    ssl: true,
   });
   client.connect();
   client.query(
-    "SELECT expenses.title, expenses.amount, expenses.buyer_id, users.name FROM expenses INNER JOIN users ON users.id=expenses.buyer_id WHERE expenses.id=$1;",
+    "SELECT expenses.id,expenses.title, expenses.amount, expenses.buyer_id, users.name FROM expenses INNER JOIN users ON users.id=expenses.buyer_id WHERE expenses.id=$1;",
     [id])
     .then(result1 => {
       client.query(
@@ -267,7 +267,8 @@ function editExpense(id,request, result) {
       result.render("displayexpense", {
         expense:result1.rows,
         users:result2.rows,
-        current:request.user.id
+        current:request.user.id,
+        activityId:activity_id
       });
       })
       .catch(error => console.warn(error))
@@ -363,6 +364,34 @@ function updateAct(activityId, update, request, result) {
     .then(res => client.end())
 }
 
+function updateExp(expenseId,update, request, result) {
+  const client = new PG.Client({
+   connectionString: process.env.DATABASE_URL,
+   ssl: true,
+  });
+  console.log("toto");
+  console.log(update);
+  client.connect();
+  client.query(
+    "SELECT activity_id FROM expenses WHERE id=$1",
+    [expenseId])
+  .then(res3 => {
+  client.query(
+    "SELECT id FROM users WHERE name=$1",
+    [update.new_buyer])
+  .then(res => {
+    console.log(res.rows[0].id);
+    return client.query("UPDATE expenses SET title=$1, amount=$2, buyer_id=$3 WHERE id=$4::uuid",[update.new_title,update.new_amount,res.rows[0].id,expenseId])
+  .then(res2 => {
+    console.log(res3.rows);
+    result.redirect(`/view_activity/${res3.rows[0].activity_id}`)
+    client.end()
+  })
+  .catch(error => console.warn(error))
+})
+})
+}
+
 function updateParticipants(activityId, update, request, result) {
   const client = new PG.Client({
    connectionString: process.env.DATABASE_URL,
@@ -453,5 +482,6 @@ module.exports = {
   updateParticipants:updateParticipants,
   updateAct:updateAct,
   formatDate:formatDate,
-  editExpense:editExpense
+  editExpense:editExpense,
+  updateExp:updateExp
 }
