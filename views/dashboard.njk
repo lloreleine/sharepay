@@ -25,7 +25,7 @@
             <h5 class="mb-1">{{activity.title}}</h5>
             <a href="/view_activity/{{activity.id}}"><button class="btn btn-dark"><i class="fas fa-search-plus"></i>&nbsp;View activity</button></a>
           </div>
-          <small class="text-muted">{{date}} </br> {{activity.location}}</small>
+          <small class="text-muted">{{date[loop.index0]}} </br> {{activity.location}}</small>
         </div>
       {% endfor %}
     </div>

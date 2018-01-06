@@ -404,10 +404,11 @@ function getBalance(id,result,request) {
 }
 
 function formatDate(date) {
+  console.log(date);
   if (date === null) {
     return false
   } else {
-    return date.toLocaleDateString("en-EN",{weekday: "long", year: "numeric", month: "long", day: "numeric"})
+    return date.map(date => date.toLocaleDateString("en-EN",{weekday: "long", year: "numeric", month: "long", day: "numeric"}))
   }
 }
 

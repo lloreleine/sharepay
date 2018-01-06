@@ -147,7 +147,7 @@ app.get("/dashboard/:id",
     .then(function(activities) {
       return result.render("dashboard", {
        activities : activities,
-       date : database.formatDate(activities[0].date)
+       date : database.formatDate(activities.map(activities => activities.date))
       })
   })
 });
