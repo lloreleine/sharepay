@@ -94,7 +94,7 @@ function viewActivity(activityId, request,result) {
   });
   client.connect();
   client.query(
-    "SELECT title,amount,name, COUNT(users_expenses.user_id) FROM expenses INNER JOIN users ON users.id=expenses.buyer_id INNER JOIN users_expenses ON expense_id=expenses.id WHERE activity_id=$1::uuid GROUP BY title,amount,name;",
+    "SELECT expenses.id,title,amount,name, COUNT(users_expenses.user_id) FROM expenses INNER JOIN users ON users.id=expenses.buyer_id INNER JOIN users_expenses ON expense_id=expenses.id WHERE activity_id=$1::uuid GROUP BY expenses.id,title,amount,name;",
     [activityId],
     function(error, result1){
       if(error){
@@ -247,6 +247,32 @@ function getActivity(request, result) {
         current:request.user.id
       });
       client.end();
+    }
+  );
+}
+
+
+function editExpense(id,request, result) {
+  const client = new PG.Client({
+   connectionString: process.env.DATABASE_URL,
+   ssl: true,
+  });
+  client.connect();
+  client.query(
+    "SELECT expenses.title, expenses.amount, expenses.buyer_id, users.name FROM expenses INNER JOIN users ON users.id=expenses.buyer_id WHERE expenses.id=$1;",
+    [id])
+    .then(result1 => {
+      client.query(
+        "SELECT users.id,users.name FROM users_expenses INNER JOIN users ON users.id=users_expenses.user_id  WHERE users_expenses.expense_id=$1;",[id])
+      .then(result2 => {
+      client.end()
+      result.render("displayexpense", {
+        expense:result1.rows,
+        users:result2.rows,
+        current:request.user.id
+      });
+      })
+      .catch(error => console.warn(error))
     }
   );
 }
@@ -434,5 +460,6 @@ module.exports = {
   displayActivity:displayActivity,
   updateParticipants:updateParticipants,
   updateAct:updateAct,
-  formatDate:formatDate
+  formatDate:formatDate,
+  editExpense:editExpense
 }

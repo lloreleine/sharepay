@@ -1,0 +1,89 @@
+{% extends "layout.njk" %}
+
+{% block title %}
+  <title>Pay Share - View Expense</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <a href="/dashboard/{{current}}"><button type="button" class="btn btn-dark">Dashboard</button></a>
+  {# <a href="/view_activity/{{activityId}}"><button type="button" class="btn btn-dark">Back to the activity</button></a> #}
+
+  <h3>Expense: </h3>
+  <form action="/updateexp/{{expense[0].id}}" method="POST">
+    <input type="text" placeholder="New Title" name="new_title" value="{{expense[0].title}}"/> &nbsp;&nbsp;
+
+    <h3>Amount: </h3>
+    <input type="text" placeholder="New Amount" name="new_amount" value="{{expense[0].amount}}"/> &nbsp;&nbsp;
+
+    <h3>Buyer: </h3>
+    <input type="text" placeholder="New Buyer" name="new_buyer" value="{{expense[0].name}}"/> &nbsp;&nbsp;
+    {# <button type="submit">Update the buyer</button> #}
+
+  </form>
+
+  <h3>Users currently involved:</h3>
+  <ul>
+    {%for element in users %}
+    <li>{{element.name}}</li>
+    {% endfor %}
+  </ul>
+  {# <form action="/updateparticipants/{{activity.id}}" method="POST">
+      <h3>Do you want to add participants?</h3>
+
+  <div class="container">
+      <div class="row">
+        <div class="col col-sm-3">
+          <div class="form-group">
+            <label for="search-user">Search user</label>
+            <input type="text" class="form-control" id="search-user" />
+          </div>
+        </div>
+        <div class="col col-sm-9">
+
+          <fieldset>
+            <legend>Add participants</legend>
+            <div id="users-list">
+              <!-- Your list will end up here -->
+            </div>
+            <button type="submit">Add the participant</button>
+          </fieldset>
+
+        </div>
+      </div>
+  </div>
+
+  </form>
+
+  <script>
+
+  const myVariableUsers = {{ users | dump | safe }};
+  const listuser=[];
+    myVariableUsers.forEach(function(element) {
+    listuser.push(element.name);
+    });
+
+  let list=document.getElementById("users-list");
+
+  // listuser.forEach(function(element) {
+  //   list.innerHTML=list.innerHTML+`<li>${element}</li>`
+  //  });
+
+  const myInput = document.querySelector("#search-user");
+    myInput.addEventListener("input", function() {
+      displayUsers(this.value);
+    });
+
+ function displayUsers(entry) {
+       list.innerHTML="";
+        listuser.forEach(function(element) {
+         if (element.includes(entry))
+         {
+         list.innerHTML=list.innerHTML+`<input type="checkbox" name="benefits" value=${element}>&nbsp;&nbsp;<label for=${element}>${element}</label><br/>`;
+         }
+       });
+    }
+
+  </script> #}
+
+{% endblock %}

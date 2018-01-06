@@ -186,6 +186,10 @@ app.post("/addactivity/new", function(request, result) {
   })
 });
 
+app.get("/editexpense/:id", function(request, result) {
+  database.editExpense(request.params.id, request,result)
+});
+
 app.get("/reopen_activity/:id", function(request, result) {
   database.reopenActivity(request.params.id)
   .then(function(activities) {
