@@ -57,6 +57,7 @@ function register(user,request,result) {
   client.query("INSERT INTO users (id, name, email, password) VALUES (uuid_generate_v4(),$1,$2,$3) RETURNING *", [user.username, user.email, hash])
     .then(res => {
       request.logIn(res.rows[0], function(error) {
+        client.end();
         if (error) {
           return result.redirect("/register");
         }
@@ -75,7 +76,11 @@ function getCurrentActivities(id) {
    ssl: true,
   });
   client.connect();
-  return client.query("SELECT * FROM users LEFT JOIN users_activities on users.id = users_activities.user_id LEFT JOIN activities on users_activities.activity_id = activities.id WHERE users.id = $1 and status = TRUE",[id]);
+  return client.query("SELECT * FROM users LEFT JOIN users_activities on users.id = users_activities.user_id LEFT JOIN activities on users_activities.activity_id = activities.id WHERE users.id = $1 and status = TRUE",[id])
+  .then(res => {
+    client.end();
+    return res;
+  })
 }
 
 function getPastActivities(id) {
@@ -84,7 +89,11 @@ function getPastActivities(id) {
    ssl: true,
   });
   client.connect();
-  return client.query("SELECT activities.id, activities.title, activities.date, activities.location, COUNT(users_activities.user_id) AS nbmembers, SUM(expenses.amount) AS totalamount FROM activities  INNER JOIN users_activities ON activities.id = users_activities.activity_id INNER JOIN expenses ON activities.id = expenses.activity_id WHERE activities.status = FALSE AND users_activities.user_id=$1 GROUP BY activities.id, activities.title, activities.date, activities.location",[id]);
+  return client.query("SELECT activities.id, activities.title, activities.date, activities.location, COUNT(users_activities.user_id) AS nbmembers, SUM(expenses.amount) AS totalamount FROM activities  INNER JOIN users_activities ON activities.id = users_activities.activity_id INNER JOIN expenses ON activities.id = expenses.activity_id WHERE activities.status = FALSE AND users_activities.user_id=$1 GROUP BY activities.id, activities.title, activities.date, activities.location",[id])
+  .then(res => {
+    client.end();
+    return res;
+  })
 }
 
 function viewActivity(activityId, request,result) {
@@ -161,6 +170,7 @@ function findOrCreateUser(profile, callback) {
     if (res.rows.length === 0) {
       return client.query("INSERT INTO users (id, name, email) VALUES (uuid_generate_v4(),$1,$2) RETURNING *",[profile._json.name, profile._json.email])
       .then(result => {
+        client.end();
         callback(null, result.rows[0]);
       })
       .catch(error => {
@@ -209,7 +219,6 @@ function addNewExpense(activityId, expense, request, result) {
     .then(res => {
       let arrayBenefits = "";
       console.log(expense);
-
       for(i=0; i<expense.benefits.length; i++){
         if(i===(expense.benefits.length-1)){
           console.log("entré dans le if");
