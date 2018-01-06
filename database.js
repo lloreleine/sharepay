@@ -195,8 +195,6 @@ function viewExpense(activityId, request, result) {
       if(error){
         console.warn(error);
       }
-      console.log("TOTO request.user.id");
-      console.log(request.user.id);
       result.render("addexpense", {
         expenses:result1.rows,
         activityId:activityId,
@@ -208,8 +206,6 @@ function viewExpense(activityId, request, result) {
 }
 
 function addNewExpense(activityId, expense, request, result) {
-  console.log(activityId);
-  console.log(expense.expense_descr);
   const client = new PG.Client({
    connectionString: process.env.DATABASE_URL,
    ssl: true,
@@ -266,6 +262,10 @@ function editExpense(id,activity_id,request, result) {
   });
   client.connect();
   client.query(
+    "SELECT users.name,users.id FROM users_activities INNER JOIN users ON users.id=users_activities.user_id WHERE users_activities.activity_id=$1;",
+    [activity_id])
+    .then(result3 => {
+    client.query(
     "SELECT expenses.id,expenses.title, expenses.amount, expenses.buyer_id, users.name FROM expenses INNER JOIN users ON users.id=expenses.buyer_id WHERE expenses.id=$1;",
     [id])
     .then(result1 => {
@@ -277,12 +277,14 @@ function editExpense(id,activity_id,request, result) {
         expense:result1.rows,
         users:result2.rows,
         current:request.user.id,
-        activityId:activity_id
+        activityId:activity_id,
+        activityusers:result3.rows
       });
       })
       .catch(error => console.warn(error))
     }
   );
+})
 }
 
 function addActivity(activity,request, result) {
@@ -293,15 +295,7 @@ function addActivity(activity,request, result) {
   client.connect();
   return client.query("INSERT INTO activities (id, title, status,location, date) VALUES (uuid_generate_v4(),$1,TRUE,$2,$3) RETURNING *", [activity.activity_descr, activity.activity_loc,activity.activity_date])
     .then(res => {
-      let arrayBenefits = "";
-      for(i=0; i<activity.benefits.length; i++){
-        if(i===(activity.benefits.length-1)){
-          arrayBenefits = arrayBenefits+`('${activity.benefits[i]}','${res.rows[0].id}')`;
-        }else{
-          arrayBenefits = arrayBenefits+`('${activity.benefits[i]}','${res.rows[0].id}'),`;
-        }
-      }
-      client.query("INSERT INTO users_activities (user_id, activity_id) VALUES " + arrayBenefits)
+      client.query("INSERT INTO users_activities (user_id, activity_id) VALUES ($1,$2)",[request.user.id,res.rows[0].id])
       .then(_res => {
         client.end()
       })
@@ -376,8 +370,6 @@ function updateExp(expenseId,update, request, result) {
    connectionString: process.env.DATABASE_URL,
    ssl: true,
   });
-  console.log("toto");
-  console.log(update);
   client.connect();
   client.query(
     "SELECT activity_id FROM expenses WHERE id=$1",
@@ -387,10 +379,8 @@ function updateExp(expenseId,update, request, result) {
     "SELECT id FROM users WHERE name=$1",
     [update.new_buyer])
   .then(res => {
-    console.log(res.rows[0].id);
     return client.query("UPDATE expenses SET title=$1, amount=$2, buyer_id=$3 WHERE id=$4::uuid",[update.new_title,update.new_amount,res.rows[0].id,expenseId])
   .then(res2 => {
-    console.log(res3.rows);
     result.redirect(`/view_activity/${res3.rows[0].activity_id}`)
     client.end()
   })
@@ -407,6 +397,26 @@ function updateParticipants(activityId, update, request, result) {
   client.connect();
   return client.query("INSERT INTO users_activities (user_id, activity_id) VALUES ((SELECT id FROM users WHERE name=$1), $2)",[update.benefits,activityId])
     .then(res => client.end())
+}
+
+
+function updateexpenseParticipants(expenseId, update, request, result) {
+  const client = new PG.Client({
+   connectionString: process.env.DATABASE_URL,
+   ssl: true,
+  });
+  client.connect();
+  client.query(
+    "SELECT activity_id FROM expenses WHERE id=$1",
+    [expenseId])
+  .then(res3 => {
+  client.query("INSERT INTO users_expenses (expense_id, user_id) VALUES ($1,(SELECT id FROM users WHERE name=$2))",[expenseId,update.benefits])
+    .then(res => {
+      result.redirect(`/view_activity/${res3.rows[0].activity_id}`)
+      client.end();
+    })
+    .catch(error => console.warn(error))
+})
 }
 
 function checkExpenseInvolved(activityId, update, request, result){
@@ -434,6 +444,7 @@ function deleteParticipants(activityId, update, request, result) {
   return client.query("DELETE FROM users_activities WHERE user_id=$1 AND activity_id=$2",[update.participants,activityId])
     .then(res => client.end())
 }
+
 
 function getBalance(id,result,request) {
   const transactions=[];
@@ -518,5 +529,6 @@ module.exports = {
   editExpense:editExpense,
   updateExp:updateExp,
   deleteParticipants:deleteParticipants,
-  checkExpenseInvolved:checkExpenseInvolved
+  checkExpenseInvolved:checkExpenseInvolved,
+  updateexpenseParticipants:updateexpenseParticipants
 }

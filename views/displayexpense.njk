@@ -34,7 +34,7 @@
     <li>{{element.name}}</li>
     {% endfor %}
   </ul>
-  {# <form action="/updateparticipants/{{activity.id}}" method="POST">
+  <form action="/updateexpenseparticipants/{{expense[0].id}}" method="POST">
       <h3>Do you want to add participants?</h3>
 
   <div class="container">
@@ -63,17 +63,14 @@
 
   <script>
 
-  const myVariableUsers = {{ users | dump | safe }};
+  const myVariableUsers = {{ activityusers | dump | safe }};
+  console.log(myVariableUsers);
   const listuser=[];
     myVariableUsers.forEach(function(element) {
     listuser.push(element.name);
     });
 
   let list=document.getElementById("users-list");
-
-  // listuser.forEach(function(element) {
-  //   list.innerHTML=list.innerHTML+`<li>${element}</li>`
-  //  });
 
   const myInput = document.querySelector("#search-user");
     myInput.addEventListener("input", function() {
@@ -90,6 +87,6 @@
        });
     }
 
-  </script> #}
+  </script>
 
 {% endblock %}

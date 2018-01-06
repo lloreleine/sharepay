@@ -223,11 +223,12 @@ app.post("/updateparticipants/:id", function(request, result) {
   })
 });
 
+app.post("/updateexpenseparticipants/:id", function(request, result) {
+  database.updateexpenseParticipants(request.params.id, request.body, request, result)
+});
+
 app.post("/updateexp/:id", function(request, result) {
   database.updateExp(request.params.id, request.body, request, result)
-  // .then(function(update) {
-  //   return result.redirect(`/editexpense/${request.params.id}`)
-  // })
 });
 
 app.post("/deleteparticipants/:id", function(request, result) {
