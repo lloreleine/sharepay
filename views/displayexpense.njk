@@ -4,6 +4,10 @@
   <title>Pay Share - View Expense</title>
 {% endblock %}
 
+{% block dashboardlink %}
+"/dashboard/{{current}}"
+{% endblock %}
+
 {% block content %}
 <div class="container">
   <a href="/dashboard/{{current}}"><button type="button" class="btn btn-dark mb-5">Dashboard</button></a>
