@@ -6,17 +6,17 @@
 
 {% block content %}
 <div class="container text-center" >
-  <div class="card border-light">
+  <div class="card" style="width: 30rem;margin:auto;">
     <div class="card-body">
       <form action="/register" method="post">
         <div>
-          <input type="text" placeholder="Name" name="username"/><br/>
+          <input type="text" placeholder="Name" class="form-control" name="username"/><br/>
         </div>
         <div>
-          <input type="text" placeholder="Email" name="email"/><br/>
+          <input type="text" placeholder="Email" class="form-control" name="email"/><br/>
         </div>
         <div>
-          <input type="password" placeholder="Password" name="password"/>
+          <input type="password" placeholder="Password" class="form-control" name="password"/>
         </div>
         <p>
           <div>

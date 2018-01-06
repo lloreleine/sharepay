@@ -6,44 +6,23 @@
 
 {% block content %}
 <div class="container text-center" >
-  <div class="card">
+  <div class="card" style="width: 30rem;margin:auto;">
     <div class="card-body">
-
-      <form action="/login" method="post">
-        <p>
-          <div>
-            <input type="text" placeholder="Enter email" class="form-control" name="username"/><br/>
-          </div>
-          <div>
-            <input type="password" class="form-control" placeholder="Password" name="password"/>
-          </div>
-          </p>
-          <div
-          <p>
-
-            <button type="submit" class="btn btn-success">
-              Log In
-            </button>
-          </div>
-          </p>
-      </form>
-
-      <div>
-        <p>
-        <a href="/register"><button type="button" class="btn btn-danger">
-          Sign Up
-        </button></a>
-        </p>
-      </div>
-
-      <div>
+      <p>
+        <form action="/login" method="post">
+              <input type="text" placeholder="Enter email" class="form-control" name="username"/></br>
+              <input type="password" class="form-control" placeholder="Password" name="password"/></br>
+              <button type="submit" class="btn btn-success">Log In</button>
+        </form>
+      </p>
+      <p>
+        <a href="/register"><button type="button" class="btn btn-danger">Sign Up</button></a>
+      </p>
+      <p>
         <a href="/auth/facebook">
-          <button type="button" class="btn btn-primary">
-            Facebook Connect
-          </button>
+          <button type="button" class="btn btn-primary">Facebook Connect</button>
         </a>
-      </div>
-
+      </p>
     </div>
   </div>
 </div>
