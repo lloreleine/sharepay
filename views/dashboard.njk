@@ -10,6 +10,10 @@
   <hr class="my-4">
 {% endblock %}
 
+{% block dashboardlink %}
+"/dashboard/{{id}}"
+{% endblock %}
+
 {% block content %}
 <div class="container">
   <a href="/addactivity"><button type="button" class="btn btn-dark">Add an activity</button></a>
