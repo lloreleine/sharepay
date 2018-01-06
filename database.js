@@ -84,7 +84,7 @@ function getPastActivities(id) {
    ssl: true,
   });
   client.connect();
-  return client.query("SELECT * FROM activities inner join users_activities on user_id=$1 and activity_id=id WHERE status = FALSE",[id]);
+  return client.query("SELECT activities.id, activities.title, activities.date, activities.location, COUNT(users_activities.user_id) AS nbmembers, SUM(expenses.amount) AS totalamount FROM activities  INNER JOIN users_activities ON activities.id = users_activities.activity_id INNER JOIN expenses ON activities.id = expenses.activity_id WHERE activities.status = FALSE AND users_activities.user_id=$1 GROUP BY activities.id, activities.title, activities.date, activities.location",[id]);
 }
 
 function viewActivity(activityId, request,result) {
@@ -114,7 +114,6 @@ function viewActivity(activityId, request,result) {
               if(error){
                 console.warn(error);
               }
-              // console.log(result2.rows);
               result.render("view_activity", {
                 expenses : result1.rows,
                 amounts_sum : result2.rows,
