@@ -521,5 +521,6 @@ module.exports = {
   formatDate:formatDate,
   editExpense:editExpense,
   updateExp:updateExp,
-  deleteParticipants:deleteParticipants
+  deleteParticipants:deleteParticipants,
+  checkExpenseInvolved:checkExpenseInvolved
 }
