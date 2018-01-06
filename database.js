@@ -346,8 +346,6 @@ function displayActivity(activityId, request, result) {
 
               result1.rows[0].date=formatDate;
 
-              console.log(result2.rows);
-
               result.render("updateactivity", {
                 activity:result1.rows[0],
                 participants:result2.rows,
