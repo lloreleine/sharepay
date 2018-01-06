@@ -15,37 +15,80 @@
 
   <h3>Activity: {{activity.title}}</h3>
   <form action="/updateact/{{activity.id}}" method="POST">
-    <input type="text" placeholder="New Title" name="new_title"/> &nbsp;&nbsp;
-    <button type="submit">Update the title</button>
+    <input type="text" placeholder="New Title" name="new_title" value="{{activity.title}}"/> &nbsp;&nbsp;
 
     <h3>Current location: {{activity.location}}</h3>
-    <input type="text" placeholder="New Location" name="new_location"/> &nbsp;&nbsp;
-    <button type="submit">Update the location</button>
+    <input type="text" placeholder="New Location" name="new_location" value="{{activity.location}}"/> &nbsp;&nbsp;
 
     <h3>Current date: {{activity.date}}</h3>
-    <input type="date" placeholder="New Date" name="new_date"/> &nbsp;&nbsp;
-    <button type="submit">Update the date</button>
+    <input type="date" placeholder="New Date" name="new_date" value="{{activity.date}}"/> &nbsp;&nbsp;
+    <button type="submit">Update the activity</button>
 
   </form>
 
-  <h3>Users involved:</h3>
+  <h3>Users currently involved:</h3>
   <ul>
     {%for element in participants %}
     <li>{{element.name}}</li>
     {% endfor %}
   </ul>
   <form action="/updateparticipants/{{activity.id}}" method="POST">
-    <fieldset>
-      <legend>Who is involved?</legend>
-      {% for element in users %}
-      <div>
-        <input type="checkbox" name="benefits" value="{{element.id}}">
-        <label for="{{element.name}}">{{element.name}}</label>
+      <h3>Do you want to add participants?</h3>
+
+  <div class="container">
+      <div class="row">
+        <div class="col col-sm-3">
+          <div class="form-group">
+            <label for="search-user">Search user</label>
+            <input type="text" class="form-control" id="search-user" />
+          </div>
+        </div>
+        <div class="col col-sm-9">
+
+          <fieldset>
+            <legend>Add participants</legend>
+            <div id="users-list">
+              <!-- Your list will end up here -->
+            </div>
+            <button type="submit">Add the participant</button>
+          </fieldset>
+
+        </div>
       </div>
-      {% endfor %}
-    </fieldset>
-    <button type="submit">Update the users involved</button>
+  </div>
+
   </form>
+
+  <script>
+
+  const myVariableUsers = {{ users | dump | safe }};
+  const listuser=[];
+    myVariableUsers.forEach(function(element) {
+    listuser.push(element.name);
+    });
+
+  let list=document.getElementById("users-list");
+
+  // listuser.forEach(function(element) {
+  //   list.innerHTML=list.innerHTML+`<li>${element}</li>`
+  //  });
+
+  const myInput = document.querySelector("#search-user");
+    myInput.addEventListener("input", function() {
+      displayUsers(this.value);
+    });
+
+ function displayUsers(entry) {
+       list.innerHTML="";
+        listuser.forEach(function(element) {
+         if (element.includes(entry))
+         {
+         list.innerHTML=list.innerHTML+`<input type="checkbox" name="benefits" value=${element}>&nbsp;&nbsp;<label for=${element}>${element}</label><br/>`;
+         }
+       });
+    }
+
+  </script>
 
   <!-- Pop up finalize activity -->
   <div class="modal fade" id="finalizeActivity" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -70,22 +113,5 @@
     </div>
   </div>
 
-  <div class="d-flex justify-content-center">
-
-  </div>
-
-  <h3>Expenses</h3>
-
-  <div class="list-group">
-    {% for element in expenses %}
-    <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
-      <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">{{element.title}} by <em>{{element.name}}</em></h5>
-        <a href="/"><button class="floatright"><i class="fas fa-search-plus"></i>&nbsp;View Expense</button></a>
-      </div>
-      <p class="mb-1">for: {{element.count}}, amount: {{element.amount}} €</p>
-    </div>
-    {% endfor %}
-  </div>
 
 {% endblock %}

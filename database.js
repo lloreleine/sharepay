@@ -299,10 +299,25 @@ function displayActivity(activityId, request, result) {
               if(error){
                 console.warn(error);
               }
+              const date = result1.rows[0].date;
+              const newDate = new Date(date);
+              let day = newDate.getDate();
+              let month = (newDate.getMonth())+1;
+              if (month<10){
+                month=`0${month}`;
+              }
+              let year = newDate.getFullYear();
+              const formatDate = `${year}-${month}-${day}`;
+
+              result1.rows[0].date=formatDate;
+
+              console.log(result3.rows);
+
               result.render("updateactivity", {
                 activity:result1.rows[0],
                 participants:result2.rows,
-                users:result3.rows
+                users:result3.rows,
+                userid:request.user.id
               });
               client.end();
             }
@@ -329,9 +344,11 @@ function updateParticipants(activityId, update, request, result) {
    ssl: true,
   });
   client.connect();
-  return client.query("UPDATE activities SET title=$1 WHERE id=$2::uuid",[update.new_title,activityId])
+  return client.query("INSERT INTO users_activities (user_id, activity_id) VALUES ((SELECT id FROM users WHERE name=$1), $2)",[update.benefits,activityId])
     .then(res => client.end())
 }
+
+
 
 
 function getBalance(id,result,request) {
