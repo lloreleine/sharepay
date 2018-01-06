@@ -403,6 +403,15 @@ function getBalance(id,result,request) {
     });
 }
 
+function formatDate(date) {
+  console.log(date);
+  if (date === null) {
+    return false
+  } else {
+    return date.map(date => date.toLocaleDateString("en-EN",{weekday: "long", year: "numeric", month: "long", day: "numeric"}))
+  }
+}
+
 module.exports = {
   fakeTest: fakeTest,
   getCurrentActivities: getCurrentActivities,
@@ -421,5 +430,6 @@ module.exports = {
   getBalance:getBalance,
   displayActivity:displayActivity,
   updateParticipants:updateParticipants,
-  updateAct:updateAct
+  updateAct:updateAct,
+  formatDate:formatDate
 }

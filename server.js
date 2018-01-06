@@ -147,7 +147,7 @@ app.get("/dashboard/:id",
     .then(function(activities) {
       return result.render("dashboard", {
        activities : activities,
-       date : activities[0].date.toLocaleDateString("en-EN",{weekday: "long", year: "numeric", month: "long", day: "numeric"})
+       date : database.formatDate(activities.map(activities => activities.date))
       })
   })
 });
