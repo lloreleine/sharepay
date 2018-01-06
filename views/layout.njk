@@ -23,7 +23,9 @@
     <a class="navbar-brand" href="/logout"><button type="button" class="btn btn btn-default navbar-btn navbar-right ">Logout</button></a>
   </nav>
 
-  <p class="jumbotron"></p>
+  <div class="jumbotron">
+    {% block user %} {% endblock %}
+  </div>
   <div id="fb-root"></div>
 
   {% block content %}{% endblock %}
