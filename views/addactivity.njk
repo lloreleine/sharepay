@@ -34,16 +34,6 @@
       </div> #}
     </div>
 
-    <fieldset>
-      <legend>Add participants</legend>
-      {% for element in users %}
-      <div>
-        <input type="checkbox" name="benefits" value="{{element.id}}">
-        <label for="{{element.name}}">{{element.name}}</label>
-      </div>
-      {% endfor %}
-    </fieldset>
-
     <button type="submit" class="btn btn-dark"><i class="far fa-save"></i>&nbsp;&nbsp;Save the activity</button>
   </form>
 

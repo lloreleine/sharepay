@@ -206,8 +206,6 @@ function viewExpense(activityId, request, result) {
 }
 
 function addNewExpense(activityId, expense, request, result) {
-  console.log(activityId);
-  console.log(expense.expense_descr);
   const client = new PG.Client({
    connectionString: process.env.DATABASE_URL,
    ssl: true,
@@ -297,15 +295,7 @@ function addActivity(activity,request, result) {
   client.connect();
   return client.query("INSERT INTO activities (id, title, status,location, date) VALUES (uuid_generate_v4(),$1,TRUE,$2,$3) RETURNING *", [activity.activity_descr, activity.activity_loc,activity.activity_date])
     .then(res => {
-      let arrayBenefits = "";
-      for(i=0; i<activity.benefits.length; i++){
-        if(i===(activity.benefits.length-1)){
-          arrayBenefits = arrayBenefits+`('${activity.benefits[i]}','${res.rows[0].id}')`;
-        }else{
-          arrayBenefits = arrayBenefits+`('${activity.benefits[i]}','${res.rows[0].id}'),`;
-        }
-      }
-      client.query("INSERT INTO users_activities (user_id, activity_id) VALUES " + arrayBenefits)
+      client.query("INSERT INTO users_activities (user_id, activity_id) VALUES ($1,$2)",[request.user.id,res.rows[0].id])
       .then(_res => {
         client.end()
       })
