@@ -411,6 +411,16 @@ function updateParticipants(activityId, update, request, result) {
     .then(res => client.end())
 }
 
+function deleteParticipants(activityId, update, request, result) {
+  const client = new PG.Client({
+   connectionString: process.env.DATABASE_URL,
+   ssl: true,
+  });
+  client.connect();
+  return client.query("DELETE FROM users_activities WHERE user_id=$1 AND activity_id=$2",[update.participants,activityId])
+    .then(res => client.end())
+}
+
 function getBalance(id,result,request) {
   const transactions=[];
   const userexpense=[];
@@ -492,5 +502,6 @@ module.exports = {
   updateAct:updateAct,
   formatDate:formatDate,
   editExpense:editExpense,
-  updateExp:updateExp
+  updateExp:updateExp,
+  deleteParticipants:deleteParticipants
 }

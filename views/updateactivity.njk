@@ -28,17 +28,16 @@
 
   </form>
 
-  <form action="/deletepart/{{activity.id}}" method="POST">
-    <fieldset>
-      <h3>Users currently involved:</h3>
-      <div>
-        {%for element in participants %}
-        <input type="checkbox" name="participants" value="{{element.user_id}}"/>&nbsp;&nbsp;<label for={{element.name}}}>{{element.name}}</label><br/>
-        {% endfor %}
-      </div>
-      <button type="submit">Delete the participant</button>
-    </fieldset>
-  </form>
+  <form action="/deleteparticipants/{{activity.id}}" method="POST">
+    <h3>Users currently involved:</h3>
+    <select name="participants">
+      {%for element in participants %}
+      <option value="{{element.user_id}}">{{element.name}}</option>
+      {% endfor %}
+    </select>
+    <br/><br/>
+  <button type="submit">Delete the participant</button>
+</form>
 
   <form action="/updateparticipants/{{activity.id}}" method="POST">
       <h3>Do you want to add participants?</h3>

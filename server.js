@@ -230,6 +230,13 @@ app.post("/updateexp/:id", function(request, result) {
   // })
 });
 
+app.post("/deleteparticipants/:id", function(request, result) {
+  database.deleteParticipants(request.params.id, request.body, request, result)
+  .then(function(update) {
+    return result.redirect(`/updateactivity/${request.params.id}`)
+  })
+});
+
 app.listen(port, function(){
   console.log("Server listening on port:"+ port);
 });
