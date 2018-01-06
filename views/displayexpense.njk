@@ -6,19 +6,21 @@
 
 {% block content %}
 <div class="container">
-  <a href="/dashboard/{{current}}"><button type="button" class="btn btn-dark">Dashboard</button></a>
-  {# <a href="/view_activity/{{activityId}}"><button type="button" class="btn btn-dark">Back to the activity</button></a> #}
+  <a href="/dashboard/{{current}}"><button type="button" class="btn btn-dark mb-5">Dashboard</button></a>
+  <a href="/view_activity/{{activityId}}"><button type="button" class="btn btn-dark mb-5">Back to the activity</button></a>
 
-  <h3>Expense: </h3>
   <form action="/updateexp/{{expense[0].id}}" method="POST">
-    <input type="text" placeholder="New Title" name="new_title" value="{{expense[0].title}}"/> &nbsp;&nbsp;
+    <label> Expense: </label><input type="text" placeholder="New Title" name="new_title" value="{{expense[0].title}}"/> &nbsp;&nbsp;
+    <label> Amount: </label><input type="text" placeholder="New Amount" name="new_amount" value="{{expense[0].amount}}"/> &nbsp;&nbsp;
+    <div class="floatleft">
+      <label>Paid by:</label>&nbsp;
+      <select name="new_buyer" value="{{expense[0].name}}">
+        <option>{{expense[0].name}}</option>
+        {% for element in users %}<option>{{element.name}}</option>{% endfor %}
+      </select>
+    </div>
 
-    <h3>Amount: </h3>
-    <input type="text" placeholder="New Amount" name="new_amount" value="{{expense[0].amount}}"/> &nbsp;&nbsp;
-
-    <h3>Buyer: </h3>
-    <input type="text" placeholder="New Buyer" name="new_buyer" value="{{expense[0].name}}"/> &nbsp;&nbsp;
-    {# <button type="submit">Update the buyer</button> #}
+    <button type="submit">Update the expense</button>
 
   </form>
 
