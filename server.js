@@ -231,7 +231,7 @@ app.post("/updateexp/:id", function(request, result) {
 });
 
 app.post("/deleteparticipants/:id", function(request, result) {
-  database.deleteParticipants(request.params.id, request.body, request, result)
+  database.checkExpenseInvolved(request.params.id, request.body, request, result)
   .then(function(update) {
     return result.redirect(`/updateactivity/${request.params.id}`)
   })

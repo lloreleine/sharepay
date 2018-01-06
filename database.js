@@ -411,12 +411,30 @@ function updateParticipants(activityId, update, request, result) {
     .then(res => client.end())
 }
 
+function checkExpenseInvolved(activityId, update, request, result){
+  const client = new PG.Client({
+   connectionString: process.env.DATABASE_URL,
+   ssl: true,
+  });
+  client.connect();
+  return client.query("SELECT expenses.title, users_expenses.user_id FROM expenses INNER JOIN users_expenses ON users_expenses.expense_id=expenses.id WHERE activity_id=$1 AND users_expenses.user_id=$2;",[activityId,update.participants])
+    .then(res => {
+      if(res.rowCount===0){
+        console.log("function delete lancée");
+        deleteParticipants(activityId, update, request, result);
+      }
+      // console.log(res);
+      client.end()
+      })
+}
+
 function deleteParticipants(activityId, update, request, result) {
   const client = new PG.Client({
    connectionString: process.env.DATABASE_URL,
    ssl: true,
   });
   client.connect();
+  console.log("entrée dans la fonction de delete");
   return client.query("DELETE FROM users_activities WHERE user_id=$1 AND activity_id=$2",[update.participants,activityId])
     .then(res => client.end())
 }

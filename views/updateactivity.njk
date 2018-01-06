@@ -88,9 +88,9 @@
  function displayUsers(entry) {
        list.innerHTML="";
         listuser.forEach(function(element) {
-         if (element.includes(entry))
+         if (((element).toLowerCase()).includes(entry.toLowerCase()))
          {
-         list.innerHTML=list.innerHTML+`<input type="checkbox" name="benefits" value=${element}>&nbsp;&nbsp;<label for=${element}>${element}</label><br/>`;
+         list.innerHTML=list.innerHTML+`<input type="checkbox" name="benefits" value="${element}">&nbsp;&nbsp;<label for=${element}>${element}</label><br/>`;
          }
        });
     }
