@@ -20,9 +20,9 @@
     {% for element in board %}
     <div class="list-group-item list-group-item-action flex-column align-items-start">
       <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">Transaction</h5>
+        <h5 class="mb-1">Transaction</h5></br>
       </div>
-      <p class="mb-1"> {{element.from}} should give {{element.value}} € to {{element.to}} </p>
+      <p class="mb-1 text-center"> {{element.from}} <button type="button" class="btn btn-dark">should give {{element.value}} €</button> to  {{element.to}} </p>
     </div>
     {% endfor %}
   </div>
