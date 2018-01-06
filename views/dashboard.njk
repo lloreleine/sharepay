@@ -4,21 +4,31 @@
   <title>Pay Share - Dashboard</title>
 {% endblock %}
 
+{% block user %}
+<h1 class="display-4">Hello {{activities[0].name}}</h1>
+<p class="lead">Welcome on your dashboard</p>
+  <hr class="my-4">
+{% endblock %}
+
 {% block content %}
 <div class="container">
   <a href="/addactivity"><button type="button" class="btn btn-dark">Add an activity</button></a>
   <a href="/history"><button type="button" class="btn btn-dark">History</button></a>
-  <h2>Current Activities</h2>
-  <div class="list-group">
-    {% for activity in activities %}
-    <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
-      <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">{{activity.title}}</h5>
-        <a href="/view_activity/{{activity.id}}"><button class="button"><i class="fas fa-search-plus"></i>&nbsp;View activity</button></a>
-      </div>
-      <p class="mb-1"> {{activity.date}}, {{activity.location}} </p>
-      </div>
-    {% endfor %}
-  </div>
+  {% if activities[0].activity_id == null %}
+    <h2>You have no current activity</h2>
+  {% else %}
+    <h2>Current Activities</h2>
+    <div class="list-group">
+      {% for activity in activities %}
+        <div class="list-group-item list-group-item-action flex-column align-items-start active bg-white text-dark">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{activity.title}}</h5>
+            <a href="/view_activity/{{activity.id}}"><button class="button"><i class="fas fa-search-plus"></i>&nbsp;View activity</button></a>
+          </div>
+          <p class="mb-1"> {{activity.date}}, {{activity.location}} </p>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
 </div>
 {% endblock %}

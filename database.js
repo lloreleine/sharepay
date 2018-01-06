@@ -75,7 +75,7 @@ function getCurrentActivities(id) {
    ssl: true,
   });
   client.connect();
-  return client.query("SELECT * FROM activities inner join users_activities on user_id=$1 and activity_id=id WHERE status = TRUE",[id]);
+  return client.query("SELECT * FROM users LEFT JOIN users_activities on users.id = users_activities.user_id LEFT JOIN activities on users_activities.activity_id = activities.id WHERE users.id = $1",[id]);
 }
 
 function getPastActivities(id) {
